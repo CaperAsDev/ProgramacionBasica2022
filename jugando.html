@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Jueguito chingon</title>
+        <style>
+            .titulo{
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                color: orange;
+            }
+
+            .opciones{
+                list-style: none;
+
+            }
+            .opciones li{
+                margin-top: 20px;
+
+            }
+            .opciones li a{
+                font-size: 20px;
+                font-family: Arial, Helvetica, sans-serif;
+                color: #000;
+                text-decoration: none;
+
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+
+            <h1 class="titulo">Vamo a jugar mamalon piedra, papel o tijera</h1>
+
+        </header>
+        
+
+        <h2>Deberas elegir una de las opciones y competir contra la computadora<span>😈</span></h2>
+        
+        <ul class="opciones">
+            <li class="opciones_piedra">
+                <input type="radio" id="piedra" name="opciones" value="1"><span>🪨</span> Piedra</input>
+            </li>
+            <li class="opciones_papel">
+                <input type="radio" id="papel"  name="opciones" value="2"><span>🧻</span> Papel</input>
+            </li>
+            <li class="opciones_tijera">
+                <input type="radio" id="tijera" name="opciones" value="3"><span>✂️</span> Tijera</input>
+            </li>
+        </ul>
+        <input id="jugar" type="button" value="jugar" onclick="evaluar()" >
+
+        <script src=""></script>
+    </body>
+</html>
