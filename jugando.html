@@ -1,54 +1,93 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8"/>
         <title>Jueguito chingon</title>
         <style>
+
+            body{
+                margin: 15px auto;
+                width: 80%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             .titulo{
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-family:  'Arial Narrow Bold', sans-serif;
                 color: orange;
             }
-
-            .opciones{
-                list-style: none;
-
+            section{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: rgb(254, 206, 188);
+                border-radius: 20px;
+                padding: 20px;
             }
-            .opciones li{
-                margin-top: 20px;
-
-            }
-            .opciones li a{
-                font-size: 20px;
+            h2{
                 font-family: Arial, Helvetica, sans-serif;
-                color: #000;
-                text-decoration: none;
+            }
+            form label span {
+                font-size: 30px;
+                margin-right: 20px;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                background-color: antiquewhite;
+                border-radius: 20px;
+                padding: 10px;
+                border: solid 2px rgb(213, 194, 166);
+            }
+            form label span:hover{
+                box-shadow: 2px 4px 6px lightsalmon;
+                background-color: rgb(208, 238, 241);
+            }
+            form input{
+                appearance: none;
+                visibility: hidden;
 
             }
+            form label input[type=radio]:checked + span{
+                box-shadow: 2px 4px 6px rgb(129, 39, 3);
+                background-color: rgb(179, 209, 245);
+
+            }
+            
+            #jugar{
+                margin-top: 30px;
+                padding: 10px 15px;
+                font-size: 20px;
+                font-weight: bold;
+                color: orangered;
+                background-color: wheat;
+                border-radius: 20px;
+                box-shadow: 2px 4px 6px lightsalmon;
+            }
+            #jugar:hover{
+                background-color: lightsalmon;
+                color: white;
+            }
+           
             
         </style>
     </head>
     <body>
         <header>
-
-            <h1 class="titulo">Vamo a jugar mamalon piedra, papel o tijera</h1>
-
+            <h1 class="titulo">Vamo' a jugar mamalon piedra, papel o tijera</h1>
         </header>
-        
+        <section>
 
-        <h2>Deberas elegir una de las opciones y competir contra la computadora<span>😈</span></h2>
-        
-        <ul class="opciones">
-            <li class="opciones_piedra">
-                <input type="radio" id="piedra" name="opciones" value="1"><span>🪨</span> Piedra</input>
-            </li>
-            <li class="opciones_papel">
-                <input type="radio" id="papel"  name="opciones" value="2"><span>🧻</span> Papel</input>
-            </li>
-            <li class="opciones_tijera">
-                <input type="radio" id="tijera" name="opciones" value="3"><span>✂️</span> Tijera</input>
-            </li>
-        </ul>
-        <input id="jugar" type="button" value="jugar" onclick="evaluar()" >
+            <h2>Deberas elegir una de las opciones y competir contra la computadora<span>😈</span></h2>
+            
+            <form action="" class="options_container">
+                
+                <label ><input type="radio" name="seleccion" id="piedra" class="seleccion"><span>🪨Piedra</span></label>
+                <label ><input type="radio" name="seleccion" id="papel" class="seleccion"><span>🧻Papel</span></label>
+                <label ><input type="radio" name="seleccion" id="tijera" class="seleccion"><span>✂️Tijera</span></label>
+                
+            </form>
+            
+            <input id="jugar" type="button" value="¡Jugar!" onclick="evaluar()" >
+        </section>
 
-        <script src=""></script>
+        <script src="./jugando.js"></script>
     </body>
 </html>
