@@ -10,39 +10,65 @@
         <header>
             <h1 class="titulo">Vamo' a jugar mamalon piedra, papel o tijera</h1>
         </header>
-        <section class="seleccion">
+        <section class="juego">
 
-            <h2>Deberas elegir una de las opciones y competir contra la computadora<span>😈</span></h2>
-            <h3>Gana el primero que gane 3 rondas o escoge las rondas que quieres jugar dando click en "Reinciar".</h3>
-            
-            <form action="" class="options_container">
-                
-                <label ><input type="radio" name="seleccion" id="piedra" class="seleccion"><span>🪨Piedra</span></label>
-                <label ><input type="radio" name="seleccion" id="papel" class="seleccion"><span>🧻Papel</span></label>
-                <label ><input type="radio" name="seleccion" id="tijera" class="seleccion"><span>✂️Tijera</span></label>
-                
-            </form>
-            <div class="botones">
+            <section class="seleccion">
+                <section class="seleccion_header">
 
-                <input id="jugar" type="button" value="¡Jugar!" onclick="evaluar()" >
+                    <h2>Deberas elegir una de las opciones y competir contra la computadora<span>😈</span></h2>
+                    <h3>Gana el primero que gane 3 rondas o escoge las rondas que quieres jugar dando click en "Reinciar".</h3>
+                </section>
+                <section class="seleccion_interaccion">
 
-                <input id="reiniciar" type="button" value="¡Reiniciar!" onclick="reiniciar()" >
-            </div>
-        </section>
-        <section class="contador">
-            <div class="contador_ganadas">
-                <h3>Ganadas</h3>
-                <div>
-                    <p id="contador_ganadas-numero">0</p>
-                </div>
-            </div>
-            <div class="contador_perdidas">
-                <h3>Perdidas</h3>
-                <div>
-                    <p id="contador_perdidas-numero">0</p>
-                </div>
-
-            </div>
+                    <form action="" class="options_container">
+                        
+                        <label ><input type="radio" name="seleccion" id="piedra" class="seleccion" onclick="icono()"><span>🪨Piedra</span></label>
+                        <label ><input type="radio" name="seleccion" id="papel" class="seleccion" onclick="icono()"><span>🧻Papel</span></label>
+                        <label ><input type="radio" name="seleccion" id="tijera" class="seleccion" onclick="icono()"><span>✂️Tijera</span></label>
+                        
+                    </form>
+                    <div class="botones">
+        
+                        <input id="jugar" type="button" value="¡Jugar!" onclick="evaluar()" >
+        
+                        <input id="reiniciar" type="button" value="¡Reiniciar!" onclick="reiniciar()" >
+                    </div>
+                </section>
+            </section>
+            <section class="duelo">
+    
+                <section class="interface">
+                    <div class="interface_resultado">
+                        <h3 id="resultadoDuelo">!Vamos a jugar¡</h3>
+                    </div>
+                    <div class="interface_duelo">
+                        <div>
+                            <p id="icono_jugador">¿</p>
+                        </div>
+                        <div>
+                            <p id="vs">VS</p>
+                        </div>
+                        <div>
+                            <p id="icono_pc">?</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="contador">
+                    <div class="contador_ganadas">
+                        <h3>Ganadas</h3>
+                        <div>
+                            <p id="contador_ganadas-numero">0</p>
+                        </div>
+                    </div>
+                    <div class="contador_perdidas">
+                        <h3>Perdidas</h3>
+                        <div>
+                            <p id="contador_perdidas-numero">0</p>
+                        </div>
+        
+                    </div>
+                </section>
+            </section>
         </section>
 
         <script src="./jugando.js"></script>

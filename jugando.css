@@ -4,8 +4,7 @@
     box-sizing: border-box;
 }
 body{
-    margin: 15px auto;
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,19 +14,49 @@ body{
     color: orangered;
     margin: 20px;
 }
-.seleccion{
+.juego{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.juego .seleccion{
+    width: 55%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(232, 232, 232);
+    justify-content: space-between;
+    background-color: rgb(242, 234, 234);
     border-radius: 10px;
-    padding: 20px;
+    overflow: hidden;
 }
-form{
-    display: flex;
-}
-h2{
+
+.juego .seleccion .seleccion_header h2{
     font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: brown;
+    width: 100%;
+    height: 80px;
+    line-height: 40px;
+    background-color: aquamarine;
+}
+.juego .seleccion .seleccion_header h3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    text-align: center;
+    font-weight: normal;
+    color: red;
+    margin-top: 10px;
+}
+.juego .seleccion .seleccion_interaccion{
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.juego .seleccion form{
+    display: flex;
+    gap: 40px;
 }
 form label span {
     font-size: 30px;
@@ -73,9 +102,70 @@ form label input[type=radio]:checked + span{
     color: rgb(241, 103, 17);
     font-weight: bolder;
 }
+.juego .duelo{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(242, 234, 234);
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
 
-.contador{
-    width: 50%;
+}
+.interface{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 200px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    
+}
+.interface_resultado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 25%;
+    background-color: aquamarine;
+}
+.interface_resultado h3{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    text-align: center;
+    color: brown;
+}
+.interface_duelo{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    height: 70%;
+    justify-content: space-evenly;
+}
+
+.interface_duelo div{
+    display: flex;
+    align-items: center;
+    height: 70%;
+    width: 30%;
+}
+.interface_duelo div p{
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica;
+    font-weight: bolder;
+}
+#icono_jugador, #icono_pc{
+    font-size: 80px;
+}
+#vs{
+    font-size: 50px;
+    color: blueviolet;
+}
+.duelo .contador{
+    width: 70%;
     height: fit-content;
     justify-content: space-evenly;
     display: flex;
