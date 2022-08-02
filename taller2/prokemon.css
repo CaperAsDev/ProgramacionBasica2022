@@ -1,0 +1,18 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.interface{
+    display: flex;
+    justify-content: space-evenly;
+}
+.interface .seccion_seleccion{
+    width: 45%;
+    margin: 20px 0;
+}
+.interface .seccion_duelo{
+    width: 45%;
+    margin: 20px 0;
+}

@@ -4,51 +4,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./prokemon.css">
     <title>Prokemon</title>
 </head>
 <body>
     <h1>Prokemon!!! 🔥💧🪨</h1>
+    <main class="interface">
 
-    <section id="seleccion_prokemon">
-
-        <h2>Elige tu invocación</h2>
-        
-        <form>
-
-            <label for="sammy"><input name="inv" type="radio" id="sammy">🧛‍♀️Sammy</label>
-            <label for="amalthea"><input name="inv" type="radio" id="amalthea">♑️Amalthea</label>
-            <label for="ashley"><input name="inv" type="radio" id="ashley">🧚🏽‍♀️Ashley</label>
-        </form>
-
-        <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar</button>
-
-    </section>
-
-    <section id="seleccion_ataque">
-
-        <p>Tu invocacion es <span id="invocacion_p1">mi waifu</span> y tiene <span id="vidas_p1">3</span> vidas.</p>
-        <p>La invocacion de tu oponente es <span id="invocacion_p2"></span> y tiene <span id="vidas_p2">3</span> vidas.</p>
-
-        <h2>Elige tu ataque:</h2>
-
-        <div>
-            <button class="boton_ataque" id="boton-agua" onclick="ataqueAgua()">Agua 💧</button>
-            <button class="boton_ataque" id="boton-fuego" onclick="ataqueFuego()">Fuego 🔥</button>
-            <button class="boton_ataque" id="boton-tierra" onclick="ataqueTierra()">Tierra 🪨</button>
-        </div>
-
-    </section>
-
-    <section id="estado-duelo">
-        <h2 class="estado-duelo_titulo">Duelo</h2>
-        <div class="estado-duelo_rondas">
-
-           <!--  <article>
-                <h3>Ronda 0</h3>
-                <p><span id="atacante_p1">Sammy</span> ataco con <sapan id="ataque_p1">impactrueno</sapan> y <span id="atacante_p2">Ashley</span> ataco con <span id="ataque_p2">remolino nocturno.</span></p>                
-            </article> -->
-        </div>
-    </section>
+        <section class="seccion_seleccion">
+            
+            <section id="seleccion_prokemon">
+                
+                <h2>Elige tu invocación</h2>
+                
+                <form>
+                    
+                    <label for="sammy"><input name="inv" type="radio" id="sammy">🧛‍♀️Sammy</label>
+                    <label for="amalthea"><input name="inv" type="radio" id="amalthea">♑️Amalthea</label>
+                    <label for="ashley"><input name="inv" type="radio" id="ashley">🧚🏽‍♀️Ashley</label>
+                </form>
+                
+                <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar</button>
+                
+            </section>
+            
+            <section id="seleccion_ataque">
+                
+                <p>Tu invocacion es <span id="invocacion_p1">mi waifu</span> tiene <span id="vidas_p1">3</span> vidas y <span id="defensa_p1">4</span> puntos de defensa.</p>
+                <p>La invocacion de tu oponente es <span id="invocacion_p2"></span> tiene <span id="vidas_p2">3</span> vidas y <span id="defensa_p2">6</span> puntos de defensa.</p>
+                
+                <h2>Elige tu ataque:</h2>
+                
+                <div>
+                    <button class="boton_ataque" id="boton-agua" onclick="ataqueAgua()">Agua 💧</button>
+                    <button class="boton_ataque" id="boton-fuego" onclick="ataqueFuego()">Fuego 🔥</button>
+                    <button class="boton_ataque" id="boton-tierra" onclick="ataqueTierra()">Tierra 🪨</button>
+                    <button class="boton_ataque" id="boton-Naturaleza" onclick="ataqueNaturaleza()">Naturaleza 🌿</button>
+                    <button class="boton_ataque" id="boton-Metal" onclick="ataqueMetal()">Metal ⚒️</button>
+                    
+                </div>
+                
+            </section>
+        </section>
+        <section class="seccion_duelo">
+            
+            <section id="estado-duelo">
+                <h2 class="estado-duelo_titulo">Duelo</h2>
+                <div class="estado-duelo_estadisticas">
+                    <h3>Estadisticas personajes</h3>
+                    <div class="estadisticas_invocaciones">
+                        <!--  <div class="estadistica_p1">
+                            <p><span id="nombre_p1"></span> -> ❤️ = <span id="salud_p1"></span> 🛡 = <span id="escudo_p1"></span></p>
+                        </div>
+                        <div class="estadistica_p2">
+                            <p><span id="nombre_p2"><b></b></span> -> ❤️ = <span id="salud_p2"></span> 🛡 = <span id="escudo_p2"></span></p>
+                        </div> -->
+                        
+                    </div>
+                </div>
+                <div class="estado-duelo_rondas">
+                    
+                    <!--  <article>
+                        <h3 class="ronda_duelo">Ronda 0</h3>
+                        <p class="movimientos_duelo"><span class="atacante_p1">Sammy</span> ataco con <sapan class="ataque_p1">impactrueno</sapan> y <span class="atacante_p2">Ashley</span> respondio con <span class="ataque_p2">remolino nocturno.</span></p>                
+                    </article> -->
+                </div>
+            </section>
+        </section>
+    </main>
 
     <section id="reinciar">
         <button id="boton-reiniciar">Reiniciar</button>
