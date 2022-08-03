@@ -14,21 +14,37 @@
     
     /* En este caso traje cada input por aparte para meterlo en un array, esto es similar a traerlos con un selector de etiqueta o clase, solo que tendria que convertir el nodeList que me devuleve en un array normal.. el resto es lo mismo */
     
-    
-    //Traigo mis inputs
+    window.addEventListener('load', iniciarJuego)
+    //Traigo mis inputs y secciones
     let sammy = document.getElementById("sammy") ;
     let amalthea = document.getElementById("amalthea") ;
     let ashley = document.getElementById("ashley") ;
+    let seccionSeleccion = document.getElementById("seleccion_prokemon");
+    let seccionSeleccionAtaque = document.getElementById("seleccion_ataque");
+    let estadoDuelo = document.getElementById("estado-duelo");
+    let botonReiniciar = document.getElementById("boton-reiniciar");
+
+    function iniciarJuego(){
+        seccionSeleccionAtaque.style.display = "none";
+        estadoDuelo.style.display = "none";
+        botonReiniciar.style.display = "none";   
+    }
     
     //meto mis inputs en un array para luego recorrerlos y buscar cual tiene su atributo checked en true.
     var invocaciones = [sammy, amalthea, ashley];
     //Creo las propiedades vida y defensa de cada uno de mis personajes
     invocaciones[0].vida = 6;
     invocaciones[0].defensa = 4;
+    invocaciones[0].nombre = "🧛‍♀️ Sammy";
+
     invocaciones[1].vida = 8;
     invocaciones[1].defensa = 3;
+    invocaciones[1].nombre = "♑️ Amalthea";
+
     invocaciones[2].vida = 4;
-    invocaciones[2].defensa = 5;
+    invocaciones[2].defensa = 6;
+    invocaciones[2].nombre = "🧚🏽‍♀️ Ashley";
+
         //console.log (invocaciones[2].vida)
 
     //Mis Arrays de ataque por Elemento
@@ -103,7 +119,7 @@ function leerSeleccion_p1(){
     const checked = (elemento) => elemento.checked;
     let invocada = invocaciones.findIndex(checked); 
     indiceInvocacion_p1 = invocada;
-    const nombreInvocada = invocaciones[invocada].nextSibling.data;
+    const nombreInvocada = invocaciones[invocada].nombre;
     return atacante_p1 = nombreInvocada;
 }
 /* //Esta linea de codigo hace lo mismo en ultimas que la funcion leerSeleccion_p1(me lanza el nombre del input seleccionado)Pero me pierdo de poder usar el array de las opciones.Asi que dejo el otro.
@@ -115,8 +131,12 @@ let invocacionSelected = false;
 //Esta funcion es la que llama el boton de seleccion en htlm. Imprime el nombre de la seleccion en el HTML y activa la funcion seleccionInvocacion_p2.
 function seleccionInvocacion(){
     if(invocacionSelected){
+        
         alert("Ya haz seleccionado tu invocacion");
+        
     }else{
+        seccionSeleccion.style.display = "none";
+        seccionSeleccionAtaque.style.display = "flex";
         leerSeleccion_p1();
         vida_p1 = invocaciones[indiceInvocacion_p1].vida;
         defensa_p1 = invocaciones[indiceInvocacion_p1].defensa;
@@ -124,14 +144,20 @@ function seleccionInvocacion(){
         let invocacion_p1 = document.getElementById("invocacion_p1");
         invocacion_p1.innerHTML = `<b id="nombreSeleccion_p1">${atacante_p1}</b>`;
         let SpanVidas_p1 = document.getElementById("vidas_p1");
-        SpanVidas_p1.innerHTML = `<b id="numeroVidas_p1">${vida_p1}</b>`;
+        SpanVidas_p1.innerHTML = `<b id="numeroVidas_p1">${vida_p1}❤️</b>`;
         let spanDefensa_p1 = document.getElementById("defensa_p1");
-        spanDefensa_p1.innerHTML = `<b id="numeroDefensa_p1">${defensa_p1}</b>`;
+        spanDefensa_p1.innerHTML = `<b id="numeroDefensa_p1">${defensa_p1}🛡</b>`;
         
         invocacionSelected = true;
         
         seleccionInvocacion_p2();
         imprimirEstadisticasIniciales(atacante_p1,vida_p1,defensa_p1,atacante_p2,vida_p2,defensa_p2);
+
+        let botonSeleccionInv = document.getElementById("boton-invocar")
+        botonSeleccionInv.disabled = true;
+        sammy.disabled = true;
+        amalthea.disabled = true;
+        ashley.disabled = true;
     }
 }
         
@@ -149,21 +175,22 @@ function seleccionInvocacion_p2(){
     }
     vida_p2 = invocaciones[indiceInvocacion_p2].vida;
     defensa_p2 = invocaciones[indiceInvocacion_p2].defensa;
-    let nombreInvocada_p2 = invocaciones[indiceInvocacion_p2].nextSibling.data;
+    let nombreInvocada_p2 = invocaciones[indiceInvocacion_p2].nombre;
 
     let spanInvocacion_p2 = document.getElementById("invocacion_p2");
     spanInvocacion_p2.innerHTML = `<b id="nombreSeleccion_p2">${nombreInvocada_p2}</b>`;
 
     let spanVidas_p2 = document.getElementById("vidas_p2");
-    spanVidas_p2.innerHTML = `<b id="numeroVidas_p2">${vida_p2}</b>`;
+    spanVidas_p2.innerHTML = `<b id="numeroVidas_p2">${vida_p2}❤️</b>`;
 
     let spanDefensa_p2 = document.getElementById("defensa_p2");
-    spanDefensa_p2.innerHTML = `<b id="numeroDefensa_p2">${defensa_p2}</b>`;
-
+    spanDefensa_p2.innerHTML = `<b id="numeroDefensa_p2">${defensa_p2}🛡</b>`;
     return atacante_p2 = nombreInvocada_p2;
 }
 //MI FUNCION para imprimir estadisticas Iniciales de personajes seleccionados en HTML
 function imprimirEstadisticasIniciales(){
+    estadoDuelo.style.display = "block";
+
     let divEstadisticas = document.querySelector('div[class="estadisticas_invocaciones"]');
     console.log(divEstadisticas)
 
@@ -181,9 +208,8 @@ function imprimirAtaques(){
         nuevaRonda(ataquesObj[indiceElemento_p1][indiceAtaque_p1].nombreAtaque, ataquesObj[indiceElemento_p2][indiceAtaque_p2].nombreAtaque  );
         dueloRonda(invocaciones[indiceInvocacion_p2].defensa, invocaciones[indiceInvocacion_p1].defensa);
         imprimirEstadisticasIniciales();
-        if(finDelJuego){alert("fin del juego")};
+        interaccionesDuelo();
         
-        console.log(vida_p2)
     }else{
         alert("No has seleccionado una invocacion");
     }
@@ -239,25 +265,41 @@ function ataqueMetal() {
 
  /* Probando diferencias entre innerHtml y create element */
  let divRondas = document.querySelector('div[class="estado-duelo_rondas"]');
+ function interaccionesDuelo(){
+
+     let seccionRondas = document.getElementById("rondas_duelo");
+     
+     let parrafoDaños_p1 = document.createElement('p');
+
+     parrafoDaños_p1.innerHTML = `${ataquesObj[indiceElemento_p1][indiceAtaque_p1].nombreAtaque} regenera +${ataquesObj[indiceElemento_p1][indiceAtaque_p1].defensa}🛡 a ${atacante_p1} e infringe ${dañoAtaque_p1}⚔️ de daño a ${atacante_p2} bajando su defensa a ${defensa_p2}🛡 y su vida a  ${vida_p2}❤️.` ;
+     
+     seccionRondas.appendChild(parrafoDaños_p1);
+
+     let parrafoDaños_p2 = document.createElement('p');
+
+     parrafoDaños_p2.innerHTML = `${ataquesObj[indiceElemento_p2][indiceAtaque_p2].nombreAtaque} regenera +${ataquesObj[indiceElemento_p2][indiceAtaque_p2].defensa}🛡 a ${atacante_p2} e infringe ${dañoAtaque_p2}⚔️ de daño a ${atacante_p1} bajando su defensa a ${defensa_p1}🛡 y su vida a  ${vida_p1}❤️.` ;
+     
+     seccionRondas.appendChild(parrafoDaños_p2);
+    }
  let rondas = 1;
  
 //Funcion para poner nevas etiquetas en el section de estado-duelo_rondas
 
  function nuevaRonda(ataque_p1, ataque_p2 ){
+    
 
-     divRondas.innerHTML += `\n           <article>\n                <h3 class="ronda_duelo">Ronda ${rondas}</h3>\n                <p class="movimientos_duelo"><span class=\"atacante_p1\">${atacante_p1}</span> ataco con <span class=\"ataque_p1\">${ataque_p1}</span> y <span class=\"atacante_p2\">${atacante_p2}</span> respondio con <span class=\"ataque_p2\">${ataque_p2}.</span></p>                \n            </article>\n        `;
+    divRondas.innerHTML = `\n           <article>\n                <h3 class="titulo_ronda_duelo" >Ronda ${rondas}</h3>\n                <p class="movimientos_duelo"><span class=\"atacante_p1\">${atacante_p1}</span> ataco con <span class=\"ataque_p1\">${ataque_p1}</span> y <span class=\"atacante_p2\">${atacante_p2}</span> respondio con <span class=\"ataque_p2\">${ataque_p2}.</span></p>                \n            </article>\n        `;
 
     rondas++;
     }
 
 //Funcion que contiene la logica de los duelos 
 var finDelJuego = false;
+var ganador ;
 function dueloRonda(defensaMaxima_p2,defensaMaxima_p1){
     if(!finDelJuego){
         defensa_p2 -= dañoAtaque_p1;
         defensa_p1 -= dañoAtaque_p2;
-        console.log(`p1 ataca con ${dañoAtaque_p1} a p2 bajando su defensa a ${defensa_p2} la vida de p1 es ${vida_p1}`)
-        console.log(`p2 ataca con ${dañoAtaque_p2} a p1 bajando su defensa a ${defensa_p1} la vida de p2 es ${vida_p2}`)
 
         if(defensa_p2 < 0 ){
             vida_p2 += defensa_p2;
@@ -270,12 +312,21 @@ function dueloRonda(defensaMaxima_p2,defensaMaxima_p1){
     }
     if(vida_p1 <= 0 || vida_p2 <=0){
         finDelJuego = true
+        if(vida_p1 == 0 && vida_p2 == 0){
+            ganador = "Empate";
+        }
+        if(vida_p1 > 0){
+            ganador = atacante_p1;
+            vida_p2 = 0;
+        }else{
+            ganador = atacante_p2;
+            vida_p1 = 0;
+        }
+        mensajeFinDelJuego();
     }else{
 
         defensa_p2 += resistenciaAtaque_p2;
         defensa_p1 += resistenciaAtaque_p1;
-        console.log(`p2 recupera  ${resistenciaAtaque_p2} de defensa y queda con  ${defensa_p2} su vida es ${vida_p2}`)
-        console.log(`p1 recupera  ${resistenciaAtaque_p1} de defensa y queda con  ${defensa_p1} su vida es ${vida_p1}`)
         
         if(defensa_p2 >= defensaMaxima_p2){
             defensa_p2 = defensaMaxima_p2;
@@ -285,6 +336,23 @@ function dueloRonda(defensaMaxima_p2,defensaMaxima_p1){
         }
     }
         
+}
+function mensajeFinDelJuego(){
+    let seccionCabecera = document.getElementById("cabecera");
+
+    let parrafoResultadoDuelo = document.createElement('h3');
+    if(ganador != "empate"){
+
+        parrafoResultadoDuelo.innerHTML = `\n                <p class="titulo_ganador"><span class=\"ganador\">¡¡${ganador}</span> ha ganado el duelo!!</p>                \n` 
+        seccionCabecera.appendChild(parrafoResultadoDuelo);
+
+    }else{
+        parrafoResultadoDuelo.innerHTML = `\n                <p class="titulo_ganador"><span class=\"ganador\">¡¡${ganador}</span> ambas invocaciones han muerto en su ultimo ataque!!</p>
+        `
+        seccionCabecera.appendChild(parrafoResultadoDuelo);
+
+    }
+    botonReiniciar.style.display = "block"
 }
 
 

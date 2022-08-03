@@ -2,6 +2,9 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+    color: rgb(60, 19, 73);
 }
 
 .interface{
@@ -11,8 +14,193 @@
 .interface .seccion_seleccion{
     width: 45%;
     margin: 20px 0;
+    height: 323px;
 }
 .interface .seccion_duelo{
     width: 45%;
     margin: 20px 0;
+}
+header{
+    width: 100%;
+    height: fit-content;
+    background-color: rgb(250, 213, 198);
+}
+header h1{
+    padding: 20px;
+    padding-bottom: 0;
+    font-weight: bolder;
+    color: tomato;
+}
+header h2{
+    margin-left: 20px;
+    padding-bottom: 10px;
+    font-weight: lighter;
+    font-size: 20px;
+}
+header h3{
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(249, 113, 59);
+    font-size: 30px;
+    color: white;
+}
+#seleccion_prokemon{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+#seleccion_prokemon h2{
+    color: tomato;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+form{
+    
+    display: flex;
+    justify-content: space-evenly;
+    height: 50px;
+    margin: 30px 0;
+}
+input {
+visibility: hidden;
+}
+label span{
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: lightblue;
+    box-shadow: 1px 1px 1px rgba(0, 0, 255, 0.7);
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(85, 39, 127);
+    font-size: 20px;
+}
+label span:hover{
+    cursor: pointer;
+    font-size: 25px;
+}
+input:checked ~ span {
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    background-color: rgba(247, 9, 9, 0.5);
+    box-shadow: 2px 2px 4px rgb(165, 42, 42);
+
+}
+#seleccion_prokemon button{
+    align-self: center;
+    width: fit-content;
+    font-weight: bold;
+    color:rgb(197, 34, 34);
+    border-radius: 20px;
+    border: 1px solid ;
+    padding: 10px;
+    box-shadow: 1px 1px 1px rgba(255, 0, 191, 0.7);
+    font-size: 20px;
+
+}
+#seleccion_ataque{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
+#seleccion_ataque p{
+    color: rgb(60, 19, 73);
+}
+#seleccion_ataque p b{
+    color: brown;
+}
+#seleccion_ataque h2{
+    font-weight: bolder;
+    font-size: 28px;
+    color: orangered;
+}
+.botones{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 60px;
+}
+.boton_ataque{
+    height: fit-content;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: lightblue;
+    box-shadow: 1px 1px 1px rgba(0, 0, 255, 0.7);
+    font-weight: bold;
+    color: rgb(85, 39, 127)
+}
+.boton_ataque:hover{
+    font-size: 15px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+#boton-agua{
+    background-color: rgba(50, 137, 250, 0.5);
+    color: rgb(43, 44, 135);
+    border-color: rgb(7, 146, 146);
+    box-shadow: 2px 2px 2px rgba(2, 54, 242, 0.7);
+
+}
+#boton-fuego{
+    background-color: rgba(243, 94, 15, 0.5);
+    color: rgb(182, 2, 2);
+    border-color: rgb(137, 7, 146);
+    box-shadow: 2px 2px 2px rgba(255, 0, 102, 0.7);
+
+}
+#boton-tierra{
+    background-color: rgba(181, 143, 15, 0.5);
+    color: brown;
+    border-color: rgb(97, 75, 2);
+    box-shadow: 2px 2px 2px rgba(165, 45, 1, 0.7);
+
+}
+#boton-Naturaleza{
+    background-color: rgba(203, 250, 50, 0.5);
+    color: rgb(70, 115, 2);
+    border-color: rgb(5, 103, 49);
+    box-shadow: 2px 2px 2px rgba(159, 143, 0, 0.7);
+
+}
+#boton-Metal{
+    background-color: rgba(84, 89, 94, 0.5);
+    color: rgb(68, 25, 25);
+    border-color: rgb(84, 81, 121);
+    box-shadow: 2px 2px 2px rgba(4, 142, 149, 0.7);
+
+}
+#estado-duelo h2,#estado-duelo h3{
+    color: orangered;
+    margin-bottom: 10px;
+}
+#estado-duelo h2{
+    font-size: 30px;
+}
+#estado-duelo h3{
+    font-size: 20px;
+}
+.estadisticas_invocaciones{
+    margin: 15px 0;
+}
+.estado-duelo_rondas p{
+    margin: 10px 0;
+    font-weight: lighter;
+    font-size: 14px;
+}
+.estado-duelo_rondas span{
+    color: brown;
+}
+#boton-reiniciar{
+    margin: 20px;
+    height: fit-content;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: rgb(255, 0, 0);
+    box-shadow: 1px 1px 1px rgba(0, 0, 255, 0.7);
+    font-weight: bolder;
+    font-size: 17px;
+    color: rgb(255, 255, 255)
 }

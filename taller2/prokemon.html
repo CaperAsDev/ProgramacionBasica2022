@@ -8,7 +8,11 @@
     <title>Prokemon</title>
 </head>
 <body>
-    <h1>Prokemon!!! 🔥💧🪨</h1>
+    <header id="cabecera">
+        <h1>Welcome to FloatIsland</h1>
+        <h2>Trust your summon or die</h2>
+    </header>
+    
     <main class="interface">
 
         <section class="seccion_seleccion">
@@ -19,9 +23,9 @@
                 
                 <form>
                     
-                    <label for="sammy"><input name="inv" type="radio" id="sammy">🧛‍♀️Sammy</label>
-                    <label for="amalthea"><input name="inv" type="radio" id="amalthea">♑️Amalthea</label>
-                    <label for="ashley"><input name="inv" type="radio" id="ashley">🧚🏽‍♀️Ashley</label>
+                    <label for="sammy"><input name="inv" type="radio" id="sammy"><span>🧛‍♀️ Sammy</span></label>
+                    <label for="amalthea"><input name="inv" type="radio" id="amalthea"><span>♑️ Amalthea</span></label>
+                    <label for="ashley"><input name="inv" type="radio" id="ashley"><span>🧚🏽‍♀️ Ashley</span></label>
                 </form>
                 
                 <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar</button>
@@ -33,9 +37,9 @@
                 <p>Tu invocacion es <span id="invocacion_p1">mi waifu</span> tiene <span id="vidas_p1">3</span> vidas y <span id="defensa_p1">4</span> puntos de defensa.</p>
                 <p>La invocacion de tu oponente es <span id="invocacion_p2"></span> tiene <span id="vidas_p2">3</span> vidas y <span id="defensa_p2">6</span> puntos de defensa.</p>
                 
-                <h2>Elige tu ataque:</h2>
+                <h2>Elige un Elemento:</h2>
                 
-                <div>
+                <div class="botones">
                     <button class="boton_ataque" id="boton-agua" onclick="ataqueAgua()">Agua 💧</button>
                     <button class="boton_ataque" id="boton-fuego" onclick="ataqueFuego()">Fuego 🔥</button>
                     <button class="boton_ataque" id="boton-tierra" onclick="ataqueTierra()">Tierra 🪨</button>
@@ -62,7 +66,7 @@
                         
                     </div>
                 </div>
-                <div class="estado-duelo_rondas">
+                <div id="rondas_duelo" class="estado-duelo_rondas">
                     
                     <!--  <article>
                         <h3 class="ronda_duelo">Ronda 0</h3>
@@ -74,7 +78,7 @@
     </main>
 
     <section id="reinciar">
-        <button id="boton-reiniciar">Reiniciar</button>
+        <button id="boton-reiniciar" onclick="location.reload()">Reiniciar</button>
     </section>
     
 
