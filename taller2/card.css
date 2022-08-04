@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;700&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.summon_card{
+    height: 260px;
+    width: 180px;
+    background-size: 130% ;
+    background-position: top;
+    background-repeat: no-repeat;   
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid rgb(92, 21, 41); 
+    display: flex;
+    align-items: flex-end;
+}
+#amalthea_card{
+    background-image: url(https://pbs.twimg.com/media/E-tPiZwWEAAUQlJ?format=jpg&name=4096x4096);
+}
+#sammy_card{
+    background-image: url(https://pbs.twimg.com/media/E-oIPe_WEAQZxjj?format=jpg&name=4096x4096);
+}
+#ashley_card{
+    background-image: url(https://pbs.twimg.com/media/E9-wwwcXsAYof_j?format=jpg&name=large);
+}
+.card_info{
+    width: 100%;
+    height: 25%;
+    border-top: 1px solid rgb(92, 21, 41);
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.summon_name{
+    color: rgb(255, 231, 145);
+    font-family: 'Oswald', sans-serif;
+    font-weight: lighter;
+    font-size: 20px;
+    line-height: 20px;
+    display: inline-block;
+    height: fit-content;
+    padding: 5px;
+    background-color: rgb(84, 50, 74);
+    position: relative;
+    border: 1px solid rgb(92, 21, 41);
+    border-radius: 5px;
+    top: -19px;
+}
+.card_icons{
+    height: 90%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    position: absolute;
+    align-items: flex-end;
+    top: 0;
+}
+.card_icons div{
+    height: 40px;
+    width: 40px;
+}
+.card_icons .heart_icon, .shield_icon, .element_icon{
+    background-position: center;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.heart_icon{
+    background-image: url(https://i.im.ge/2022/08/04/FbswDJ.heart-icon.png);
+}
+.shield_icon{
+    background-image: url(https://i.im.ge/2022/08/04/FbscIh.shield-icon.png);
+}
+#sammy_element-icon{
+    background-image: url(https://cdn-icons-png.flaticon.com/512/453/453609.png);
+}
+#amalthea_element-icon{
+    background-image: url(https://emojis.wiki/emoji-pics/apple/rock-apple.png);
+}
+#ashley_element-icon{
+    background-image: url(https://cdn-0.emojis.wiki/emoji-pics/facebook/leaf-fluttering-in-wind-facebook.png);
+}
+.card_icons .heart_icon p, .shield_icon p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: wheat;
+    font-size: 18px;
+}

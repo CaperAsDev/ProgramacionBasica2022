@@ -10,11 +10,12 @@
 .interface{
     display: flex;
     justify-content: space-evenly;
+    height: fit-content;
 }
 .interface .seccion_seleccion{
     width: 45%;
     margin: 20px 0;
-    height: 323px;
+    height: fit-content;
 }
 .interface .seccion_duelo{
     width: 45%;
@@ -48,7 +49,7 @@ header h3{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: fit-content;
 }
 #seleccion_prokemon h2{
     color: tomato;
@@ -56,37 +57,28 @@ header h3{
     margin-bottom: 10px;
 }
 form{
-    
     display: flex;
     justify-content: space-evenly;
-    height: 50px;
-    margin: 30px 0;
+    height: fit-content;
 }
 input {
 visibility: hidden;
 }
-label span{
-    border: 1px solid red;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: lightblue;
-    box-shadow: 1px 1px 1px rgba(0, 0, 255, 0.7);
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(85, 39, 127);
-    font-size: 20px;
-}
-label span:hover{
+
+label .summon_card:hover{
     cursor: pointer;
-    font-size: 25px;
-}
-input:checked ~ span {
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    background-color: rgba(247, 9, 9, 0.5);
-    box-shadow: 2px 2px 4px rgb(165, 42, 42);
+    border: 3px solid rgb(102, 26, 26);
+    border-style: outset;
+    box-shadow: 0px 0px 6px rgb(165, 42, 42);
 
 }
+input:checked ~ .summon_card {
+    box-shadow: 5px 5px 10px rgb(106, 3, 3);
+    border-style: double;
+    border-width: 5px;
+}
 #seleccion_prokemon button{
+    margin-top: 15px;
     align-self: center;
     width: fit-content;
     font-weight: bold;
@@ -111,6 +103,7 @@ input:checked ~ span {
     color: brown;
 }
 #seleccion_ataque h2{
+    margin:30px 0;
     font-weight: bolder;
     font-size: 28px;
     color: orangered;
@@ -191,6 +184,10 @@ input:checked ~ span {
 }
 .estado-duelo_rondas span{
     color: brown;
+}
+.estado-duelo_rondas{
+    display: flex;
+    flex-direction: column-reverse;
 }
 #boton-reiniciar{
     margin: 20px;

@@ -15,6 +15,11 @@
     /* En este caso traje cada input por aparte para meterlo en un array, esto es similar a traerlos con un selector de etiqueta o clase, solo que tendria que convertir el nodeList que me devuleve en un array normal.. el resto es lo mismo */
     
     window.addEventListener('load', iniciarJuego)
+    function iniciarJuego(){
+        seccionSeleccionAtaque.style.display = "none";
+        estadoDuelo.style.display = "none";
+        botonReiniciar.style.display = "none";   
+    }
     //Traigo mis inputs y secciones
     let sammy = document.getElementById("sammy") ;
     let amalthea = document.getElementById("amalthea") ;
@@ -24,12 +29,9 @@
     let estadoDuelo = document.getElementById("estado-duelo");
     let botonReiniciar = document.getElementById("boton-reiniciar");
 
-    function iniciarJuego(){
-        seccionSeleccionAtaque.style.display = "none";
-        estadoDuelo.style.display = "none";
-        botonReiniciar.style.display = "none";   
-    }
-    
+    var sammyCard = `\n                        <div class=\"summon_card\" id=\"sammy_card\">\n                            <section class=\"card_info\">\n                                <p class=\"summon_name\">Sammy</p>\n                                <div class=\"card_icons\">\n                                    <div class=\"shield_icon\">\n                                        <p id=\"shield_number\">4</p>\n                                    </div>\n                                    <div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n                                    <div class=\"heart_icon\">\n                                        <p id=\"lifes_number\">6</p>\n                                    </div>\n                                </div>\n                            </section>\n                        </div>\n                    `;
+
+    console.log(sammyCard)
     //meto mis inputs en un array para luego recorrerlos y buscar cual tiene su atributo checked en true.
     var invocaciones = [sammy, amalthea, ashley];
     //Creo las propiedades vida y defensa de cada uno de mis personajes
@@ -37,8 +39,8 @@
     invocaciones[0].defensa = 4;
     invocaciones[0].nombre = "🧛‍♀️ Sammy";
 
-    invocaciones[1].vida = 8;
-    invocaciones[1].defensa = 3;
+    invocaciones[1].vida = 7;
+    invocaciones[1].defensa = 2;
     invocaciones[1].nombre = "♑️ Amalthea";
 
     invocaciones[2].vida = 4;
@@ -141,12 +143,10 @@ function seleccionInvocacion(){
         vida_p1 = invocaciones[indiceInvocacion_p1].vida;
         defensa_p1 = invocaciones[indiceInvocacion_p1].defensa;
         
-        let invocacion_p1 = document.getElementById("invocacion_p1");
-        invocacion_p1.innerHTML = `<b id="nombreSeleccion_p1">${atacante_p1}</b>`;
-        let SpanVidas_p1 = document.getElementById("vidas_p1");
-        SpanVidas_p1.innerHTML = `<b id="numeroVidas_p1">${vida_p1}❤️</b>`;
-        let spanDefensa_p1 = document.getElementById("defensa_p1");
-        spanDefensa_p1.innerHTML = `<b id="numeroDefensa_p1">${defensa_p1}🛡</b>`;
+        let cardsSummonedSection = document.querySelector(".cards_summoned");
+
+        cardsSummonedSection.innerHTML = sammyCard;
+       
         
         invocacionSelected = true;
         
@@ -267,7 +267,7 @@ function ataqueMetal() {
  let divRondas = document.querySelector('div[class="estado-duelo_rondas"]');
  function interaccionesDuelo(){
 
-     let seccionRondas = document.getElementById("rondas_duelo");
+     let seccionRondas = document.querySelector(".bloque_duelo");
      
      let parrafoDaños_p1 = document.createElement('p');
 
@@ -288,7 +288,7 @@ function ataqueMetal() {
  function nuevaRonda(ataque_p1, ataque_p2 ){
     
 
-    divRondas.innerHTML = `\n           <article>\n                <h3 class="titulo_ronda_duelo" >Ronda ${rondas}</h3>\n                <p class="movimientos_duelo"><span class=\"atacante_p1\">${atacante_p1}</span> ataco con <span class=\"ataque_p1\">${ataque_p1}</span> y <span class=\"atacante_p2\">${atacante_p2}</span> respondio con <span class=\"ataque_p2\">${ataque_p2}.</span></p>                \n            </article>\n        `;
+    divRondas.innerHTML = `\n           <article class=\"bloque_duelo\">\n                <h3 class="titulo_ronda_duelo" >Ronda ${rondas}</h3>\n                <p class="movimientos_duelo"><span class=\"atacante_p1\">${atacante_p1}</span> ataco con <span class=\"ataque_p1\">${ataque_p1}</span> y <span class=\"atacante_p2\">${atacante_p2}</span> respondio con <span class=\"ataque_p2\">${ataque_p2}.</span></p>                \n            </article>\n        `;
 
     rondas++;
     }
@@ -312,10 +312,9 @@ function dueloRonda(defensaMaxima_p2,defensaMaxima_p1){
     }
     if(vida_p1 <= 0 || vida_p2 <=0){
         finDelJuego = true
-        if(vida_p1 == 0 && vida_p2 == 0){
+        if(vida_p1 <= 0 && vida_p2 <= 0){
             ganador = "Empate";
-        }
-        if(vida_p1 > 0){
+        }else if(vida_p1 > 0){
             ganador = atacante_p1;
             vida_p2 = 0;
         }else{

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./prokemon.css">
+    <link rel="stylesheet" href="./card.css">
     <title>Prokemon</title>
 </head>
 <body>
@@ -21,11 +22,58 @@
                 
                 <h2>Elige tu invocación</h2>
                 
-                <form>
-                    
-                    <label for="sammy"><input name="inv" type="radio" id="sammy"><span>🧛‍♀️ Sammy</span></label>
-                    <label for="amalthea"><input name="inv" type="radio" id="amalthea"><span>♑️ Amalthea</span></label>
-                    <label for="ashley"><input name="inv" type="radio" id="ashley"><span>🧚🏽‍♀️ Ashley</span></label>
+                <form> 
+                    <label for="sammy" id="label_sammy">
+                        <input name="inv" type="radio" id="sammy">
+                        <div class="summon_card" id="sammy_card">
+                            <section class="card_info">
+                                <p class="summon_name">Sammy</p>
+                                <div class="card_icons">
+                                    <div class="shield_icon">
+                                        <p id="shield_number">4</p>
+                                    </div>
+                                    <div class="element_icon" id="sammy_element-icon"></div>
+                                    <div class="heart_icon">
+                                        <p id="lifes_number">6</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </label>
+                    <label for="amalthea">
+                        <input name="inv" type="radio" id="amalthea">
+                        <div class="summon_card" id="amalthea_card">
+                            <section class="card_info">
+                                <p class="summon_name">Amalthea</p>
+                                <div class="card_icons">
+                                    <div class="shield_icon">
+                                        <p id="shield_number">2</p>
+                                    </div>
+                                    <div class="element_icon" id="amalthea_element-icon"></div>
+                                    <div class="heart_icon">
+                                        <p id="lifes_number">7</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </label>
+                    <label for="ashley">
+                        <input name="inv" type="radio" id="ashley">
+                        <div class="summon_card" id="ashley_card">
+                            <section class="card_info">
+                                <p class="summon_name">Ashley</p>
+                                <div class="card_icons">
+                                    <div class="shield_icon">
+                                        <p id="shield_number">6</p>
+                                    </div>
+                                    <div class="element_icon" id="ashley_element-icon"></div>
+                                    <div class="heart_icon">
+                                        <p id="lifes_number">4</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </label>
                 </form>
                 
                 <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar</button>
@@ -34,8 +82,9 @@
             
             <section id="seleccion_ataque">
                 
-                <p>Tu invocacion es <span id="invocacion_p1">mi waifu</span> tiene <span id="vidas_p1">3</span> vidas y <span id="defensa_p1">4</span> puntos de defensa.</p>
-                <p>La invocacion de tu oponente es <span id="invocacion_p2"></span> tiene <span id="vidas_p2">3</span> vidas y <span id="defensa_p2">6</span> puntos de defensa.</p>
+                <div class="cards_summoned">
+
+                </div>
                 
                 <h2>Elige un Elemento:</h2>
                 
