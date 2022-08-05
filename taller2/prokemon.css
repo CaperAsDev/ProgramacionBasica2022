@@ -96,11 +96,14 @@ input:checked ~ .summon_card {
     justify-content: space-evenly;
     height: 100%;
 }
-#seleccion_ataque p{
-    color: rgb(60, 19, 73);
+.cards_summoned{
+    display: flex;
+    justify-content: space-between;
 }
-#seleccion_ataque p b{
-    color: brown;
+.cards_summoned .vs{
+    font-size: 100px;
+    align-self: center;
+    color: orangered;
 }
 #seleccion_ataque h2{
     margin:30px 0;
@@ -200,4 +203,40 @@ input:checked ~ .summon_card {
     font-weight: bolder;
     font-size: 17px;
     color: rgb(255, 255, 255)
+}
+
+@media screen and (max-width: 360px) {
+    .interface{
+        flex-direction: column;
+    }
+    .interface .seccion_seleccion{
+        width: 100%;
+    }
+    .cards_summoned {
+        padding: 5px;
+        height: 240px ;
+    }
+    .cards_summoned .vs{
+        font-size: 30px;
+    }
+    .summon_card{
+        height: 200px;
+    }
+    #seleccion_ataque h2, #estado-duelo h2, #estado-duelo h3{
+        text-align: center;
+    }
+    .interface .seccion_duelo{
+        width: 100%;
+        padding: 5px;
+    }
+    .bloque_duelo p{
+        text-align: center;
+    }
+    .estadisticas_invocaciones{
+    margin-left: 20px ;
+    }
+    form{
+        flex-direction: column;
+        align-items: center;
+    }
 }

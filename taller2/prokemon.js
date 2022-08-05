@@ -29,23 +29,24 @@
     let estadoDuelo = document.getElementById("estado-duelo");
     let botonReiniciar = document.getElementById("boton-reiniciar");
 
-    var sammyCard = `\n                        <div class=\"summon_card\" id=\"sammy_card\">\n                            <section class=\"card_info\">\n                                <p class=\"summon_name\">Sammy</p>\n                                <div class=\"card_icons\">\n                                    <div class=\"shield_icon\">\n                                        <p id=\"shield_number\">4</p>\n                                    </div>\n                                    <div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n                                    <div class=\"heart_icon\">\n                                        <p id=\"lifes_number\">6</p>\n                                    </div>\n                                </div>\n                            </section>\n                        </div>\n                    `;
-
-    console.log(sammyCard)
+    console.log(document.getElementById("label_ashley").innerHTML)
     //meto mis inputs en un array para luego recorrerlos y buscar cual tiene su atributo checked en true.
     var invocaciones = [sammy, amalthea, ashley];
     //Creo las propiedades vida y defensa de cada uno de mis personajes
     invocaciones[0].vida = 6;
     invocaciones[0].defensa = 4;
     invocaciones[0].nombre = "🧛‍♀️ Sammy";
+    invocaciones[0].cardCode = `\n <div class=\"summon_card\" id=\"sammy_card\">\n <section class=\"card_info\">\n <p class=\"summon_name\">Sammy</p>\n <div class=\"card_icons\">\n <div class=\"shield_icon\">\n <p id=\"shield_number\">4</p>\n</div>\n<div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n<div class=\"heart_icon\">\n<p id=\"lifes_number\">6</p>\n </div>\n</div>\n </section>\n</div>\n`;
 
     invocaciones[1].vida = 7;
     invocaciones[1].defensa = 2;
     invocaciones[1].nombre = "♑️ Amalthea";
+    invocaciones[1].cardCode = `\n <div class="summon_card" id="amalthea_card">\n <section class="card_info">\n<p class="summon_name">Amalthea</p>\n <div class="card_icons">\n<div class="shield_icon">\n<p id="shield_number">2</p>\n</div>\n <div class="element_icon" id="amalthea_element-icon"></div>\n <div class="heart_icon">\n <p id="lifes_number">7</p>\n </div>\n </div>\n </section>\n </div>\n`;
 
     invocaciones[2].vida = 4;
     invocaciones[2].defensa = 6;
     invocaciones[2].nombre = "🧚🏽‍♀️ Ashley";
+    invocaciones[2].cardCode = `\n<div class="summon_card" id="ashley_card">\n<section class="card_info">\n<p class="summon_name">Ashley</p>\n<div class="card_icons">\n<div class="shield_icon">\n<p id="shield_number">6</p>\n</div>\n<div class="element_icon" id="ashley_element-icon"></div>\n<div class="heart_icon">\n<p id="lifes_number">4</p>\n</div>\n</div>\n</section>\n</div>\n`;
 
         //console.log (invocaciones[2].vida)
 
@@ -144,14 +145,16 @@ function seleccionInvocacion(){
         defensa_p1 = invocaciones[indiceInvocacion_p1].defensa;
         
         let cardsSummonedSection = document.querySelector(".cards_summoned");
-
-        cardsSummonedSection.innerHTML = sammyCard;
-       
-        
-        invocacionSelected = true;
         
         seleccionInvocacion_p2();
         imprimirEstadisticasIniciales(atacante_p1,vida_p1,defensa_p1,atacante_p2,vida_p2,defensa_p2);
+        
+        cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p1].cardCode;
+        cardsSummonedSection.innerHTML +=`<p class="vs" >VS</p>`
+        cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p2].cardCode;
+        
+        invocacionSelected = true;
+        
 
         let botonSeleccionInv = document.getElementById("boton-invocar")
         botonSeleccionInv.disabled = true;
@@ -177,14 +180,6 @@ function seleccionInvocacion_p2(){
     defensa_p2 = invocaciones[indiceInvocacion_p2].defensa;
     let nombreInvocada_p2 = invocaciones[indiceInvocacion_p2].nombre;
 
-    let spanInvocacion_p2 = document.getElementById("invocacion_p2");
-    spanInvocacion_p2.innerHTML = `<b id="nombreSeleccion_p2">${nombreInvocada_p2}</b>`;
-
-    let spanVidas_p2 = document.getElementById("vidas_p2");
-    spanVidas_p2.innerHTML = `<b id="numeroVidas_p2">${vida_p2}❤️</b>`;
-
-    let spanDefensa_p2 = document.getElementById("defensa_p2");
-    spanDefensa_p2.innerHTML = `<b id="numeroDefensa_p2">${defensa_p2}🛡</b>`;
     return atacante_p2 = nombreInvocada_p2;
 }
 //MI FUNCION para imprimir estadisticas Iniciales de personajes seleccionados en HTML
