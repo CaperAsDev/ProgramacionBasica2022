@@ -27,7 +27,7 @@ header{
     background-color: rgb(250, 213, 198);
 }
 header h1{
-    padding: 20px;
+    padding: 10px;
     padding-bottom: 0;
     font-weight: bolder;
     color: tomato;
@@ -255,6 +255,28 @@ input:checked ~ .summon_card {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+.contador-choques{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    gap: 50px;
+}
+.contador-choques .contador-enemigo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.contador-choques .contador-enemigo .nombre-enemigo{
+    color: orangered;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.contador_numero{
+    color: brown;
+    font-size: 26px;
 }
 
 @media screen and (max-width: 360px) {
