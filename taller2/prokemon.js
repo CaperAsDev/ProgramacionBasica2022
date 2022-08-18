@@ -75,8 +75,8 @@ let intervaloLecturaChoques;
     invocaciones[0].nombre = "🧛‍♀️ Sammy";
     invocaciones[0].imgMin = new Image();
     invocaciones[0].imgMin.src = "https://i.postimg.cc/cCSjQ7d3/sammy.png";
-    invocaciones[0].x = aleatorio(10,500);
-    invocaciones[0].y = aleatorio(10,180);
+    invocaciones[0].x = aleatorio(10,480);
+    invocaciones[0].y = aleatorio(10,150);
     invocaciones[0].velX = 0;
     invocaciones[0].velY = 0;
     invocaciones[0].cardCode = `\n <div class=\"summon_card\" id=\"sammy_card\">\n <section class=\"card_info\">\n <p class=\"summon_name\">Sammy</p>\n <div class=\"card_icons\">\n<div class=\"heart_icon\">\n<p id=\"lifes_number\">${invocaciones[0].vida}</p>\n </div> \n<div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n<div class=\"shield_icon\">\n <p id=\"shield_number\">${invocaciones[0].defensa}</p>\n</div>\n</div>\n </section>\n</div>\n`;
@@ -86,8 +86,8 @@ let intervaloLecturaChoques;
     invocaciones[1].nombre = "♑️ Amalthea";
     invocaciones[1].imgMin = new Image();
     invocaciones[1].imgMin.src = "https://i.postimg.cc/65xbShJ4/amalthea.png";
-    invocaciones[1].x = aleatorio(200,500);
-    invocaciones[1].y = aleatorio(150,350);
+    invocaciones[1].x = aleatorio(10,480);
+    invocaciones[1].y = aleatorio(180,320);
     invocaciones[1].velX = 0;
     invocaciones[1].velY = 0;
     invocaciones[1].ancho = 70;
@@ -99,8 +99,8 @@ let intervaloLecturaChoques;
     invocaciones[2].nombre = "🧚🏽‍♀️ Ashley";
     invocaciones[2].imgMin = new Image;
     invocaciones[2].imgMin.src = "https://i.postimg.cc/nzYTfyts/ashley.png";
-    invocaciones[2].x = aleatorio(10,500);
-    invocaciones[2].y = aleatorio(10,350);
+    invocaciones[2].x = aleatorio(10,480);
+    invocaciones[2].y = aleatorio(10,320);
     invocaciones[2].velX = 0;
     invocaciones[2].velY = 0;
     invocaciones[2].cardCode = `\n<div class="summon_card" id="ashley_card">\n<section class="card_info">\n<p class="summon_name">Ashley</p>\n<div class="card_icons">\n<div class="heart_icon">\n<p id="lifes_number">${invocaciones[2].vida}</p>\n</div>\n<div class="element_icon" id="ashley_element-icon"></div>\n<div class="shield_icon">\n<p id="shield_number">${invocaciones[2].defensa}</p>\n</div>\n</div>\n</section>\n</div>\n`;
@@ -254,8 +254,8 @@ function escalaVida(){
     for(let s = 0; s <= defensa_p2 - 1; s++ ){
         barraEscudo_p2 = barraEscudo_p2 + escudo;
     }
-    console.log(barraVida_p1)
-    console.log(barraVida_p2)
+    console.log(defensa_p2)
+    console.log(barraEscudo_p2)
 }
 
 //Mi funcion para imprimir ataques en HTML que es activada al dar click a los botones de ataque.Tambien selecciona el ataque aleatorio del P2
@@ -527,17 +527,18 @@ function controlChoques(index){
         return
     }
 }
+let enemigosIndex_p2;
 function resultadoChoquesEnemigo(){
-    indiceInvocacion_p2 = enemigos.findIndex(enem => enem.contadorChoques == 3);
-    
-    vida_p2 = enemigos[indiceInvocacion_p2].vida;
-    defensa_p2 = enemigos[indiceInvocacion_p2].defensa;
-    atacante_p2 = enemigos[indiceInvocacion_p2].nombre;
+    enemigosIndex_p2 = enemigos.findIndex(enem => enem.contadorChoques == 3);
+    vida_p2 = enemigos[enemigosIndex_p2].vida;
+    defensa_p2 = enemigos[enemigosIndex_p2].defensa;
+    atacante_p2 = enemigos[enemigosIndex_p2].nombre;
+    indiceInvocacion_p2 = invocaciones.findIndex(pj => pj.nombre == atacante_p2)
     imprimirEstadisticasIniciales();
     sectionVerMapa.style.display = "none";
     cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p1].cardCode;
     cardsSummonedSection.innerHTML +=`<p class="vs" >VS</p>`
-    cardsSummonedSection.innerHTML += enemigos[indiceInvocacion_p2].cardCode;
+    cardsSummonedSection.innerHTML += enemigos[enemigosIndex_p2].cardCode;
     seccionSeleccionAtaque.style.display = "flex";  
 }
 //Detiene el movimiento de los enemigos cuando ocurre el choque
