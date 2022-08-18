@@ -30,11 +30,11 @@
                                 <p class="summon_name">Sammy</p>
                                 <div class="card_icons">
                                     <div class="heart_icon">
-                                        <p id="lifes_number">6</p>
+                                        <p id="lifes_number">?</p>
                                     </div>
                                     <div class="element_icon" id="sammy_element-icon"></div>
                                     <div class="shield_icon">
-                                        <p id="shield_number">4</p>
+                                        <p id="shield_number">?</p>
                                     </div>
                                     
                                 </div>
@@ -48,11 +48,11 @@
                                 <p class="summon_name">Amalthea</p>
                                 <div class="card_icons">
                                     <div class="heart_icon">
-                                        <p id="lifes_number">7</p>
+                                        <p id="lifes_number">?</p>
                                     </div>
                                     <div class="element_icon" id="amalthea_element-icon"></div>
                                     <div class="shield_icon">
-                                        <p id="shield_number">2</p>
+                                        <p id="shield_number">?</p>
                                     </div>  
                                 </div>
                             </section>
@@ -65,11 +65,11 @@
                                 <p class="summon_name">Ashley</p>
                                 <div class="card_icons">
                                     <div class="heart_icon">
-                                        <p id="lifes_number">4</p>
+                                        <p id="lifes_number">?</p>
                                     </div>
                                     <div class="element_icon" id="ashley_element-icon"></div>
                                     <div class="shield_icon">
-                                        <p id="shield_number">6</p>
+                                        <p id="shield_number">?</p>
                                     </div>  
                                 </div>
                             </section>
@@ -77,10 +77,20 @@
                     </label>
                 </form>
                 
-                <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar</button>
+                <button id="boton-invocar" onclick="seleccionInvocacion()">Seleccionar enemigo aleatoriamente</button>
+                <button id="boton-mapa" onclick="seleccionPorMapa()">Seleccionar enemigo en mapa</button>
+                
+            </section><!-- Fin seccion seleccion -->
+
+            <section id="zona-mapa">
+                <div class="contador-choques">
+                    
+                </div>
+                <p class="Zona-mapa_titulo">Evade a tus enemigos ↕️↔️</p>
+                <canvas id="mapa"></canvas>
                 
             </section>
-            
+
             <section id="seleccion_ataque">
                 
                 <div class="cards_summoned">
