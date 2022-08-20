@@ -39,6 +39,15 @@ app.get("/unirse",(req, res) =>{
     res.send(id)
 })
 
+app.get("/selecciones",(req, res) =>{
+    const nombres = jugadores.map(function(x){
+        return x.invocacion
+    })
+    console.log(nombres)
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.send({nombres})
+})
+
 app.post("/prokemon/:jugadorId", (req,res)=>{
     const jugadorId = req.params.jugadorId ||""
     const name = req.body.prokemon || ""

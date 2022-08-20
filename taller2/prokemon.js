@@ -20,7 +20,7 @@ function iniciarJuego(){
 function unirseAlJuego(){
     fetch("http://localhost:8080/unirse")
         .then(function(res){
-            console.log(res);
+            // console.log(res);
             if(res.ok){
                 res.text()
                     .then(function(respuesta){
@@ -91,6 +91,7 @@ let enemigosIndex_p2;
     let enemigos = []
     //Creo las propiedades que necesito de cada personaje (tal vez metiendo todo en un objeto y luego metiendo el objeto al imput como propiedad ahorraria un poco de espacio, lo escribiria con una funcion creadora de objetos.)
     invocaciones[0].idJugador = null;
+    invocaciones[0].selected = false
     invocaciones[0].vida = 6;
     invocaciones[0].defensa = 4;
     invocaciones[0].nombre = "🧛‍♀️ Sammy";
@@ -103,6 +104,7 @@ let enemigosIndex_p2;
     invocaciones[0].cardCode = `\n <div class=\"summon_card\" id=\"sammy_card\">\n <section class=\"card_info\">\n <p class=\"summon_name\">Sammy</p>\n <div class=\"card_icons\">\n<div class=\"heart_icon\">\n<p id=\"lifes_number\">${invocaciones[0].vida}</p>\n </div> \n<div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n<div class=\"shield_icon\">\n <p id=\"shield_number\">${invocaciones[0].defensa}</p>\n</div>\n</div>\n </section>\n</div>\n`;
 //Hay que trabajar en las cards y hacerlas lo mas simplificada posible.
     invocaciones[1].idJugador = null;
+    invocaciones[1].selected = false
     invocaciones[1].vida = 7;
     invocaciones[1].defensa = 2;
     invocaciones[1].nombre = "♑️ Amalthea";
@@ -117,6 +119,7 @@ let enemigosIndex_p2;
     invocaciones[1].cardCode = `\n <div class="summon_card" id="amalthea_card">\n <section class="card_info">\n<p class="summon_name">Amalthea</p>\n <div class="card_icons">\n<div class="heart_icon">\n <p id="lifes_number">${invocaciones[1].vida}</p>\n </div>\n <div class="element_icon" id="amalthea_element-icon"></div>\n<div class="shield_icon">\n<p id="shield_number">${invocaciones[1].defensa}</p>\n</div> \n </div>\n </section>\n </div>\n`;
 
     invocaciones[2].idJugador = null;
+    invocaciones[2].selected = false
     invocaciones[2].vida = 4;
     invocaciones[2].defensa = 7;
     invocaciones[2].nombre = "🧚🏽‍♀️ Ashley";
@@ -236,7 +239,28 @@ function juegoAleatorio(){
         })
     })
  }
+//REcibir informacion de personajes seleccionados
+let intLecturaSelecciones 
+/* setTimeout(() => {
+    
+}, timeout); */
+[{"id":"0.0917637042042283"},{"id":"0.6564939267393175","invocacion":{"nombre":"♑️ Amalthea"},"x":95,"y":282},{"id":"0.9070220399897277","invocacion":{"nombre":"🧚🏽‍♀️ Ashley"},"x":116,"y":25}]
+// intLecturaSelecciones = setInterval(invSeleccionadas,500)
 
+function invSeleccionadas () {
+    fetch(`http://localhost:8080/selecciones`)
+        .then(function(res){
+            if(res.ok){
+                res.text()
+                    .then(function(nombres){
+                        console.log(nombres)
+                    
+                        console.log(typeof(nombres))
+                        
+                    })
+            }
+        })
+}
 
 
 //mi funcion para seleccion e impresion en HTML de invocacion aleatoria para el atacante_p2
@@ -497,6 +521,7 @@ function enviarPosicion(x,y){
         if(res.ok){
             res.json()
                 .then(function({enemies}){
+                    console.log(enemies)
                     enemies.forEach(function(enemy){
                         const invocacionNombre = enemy.invocacion.nombre || "asi no era"
 
