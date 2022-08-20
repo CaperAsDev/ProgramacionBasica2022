@@ -15,7 +15,22 @@ function iniciarJuego(){
     estadoDuelo.style.display = "none";
     botonReiniciar.style.display = "none";  
     sectionVerMapa.style.display ='none'; 
+    unirseAlJuego()
 }
+function unirseAlJuego(){
+    fetch("http://localhost:8080/unirse")
+        .then(function(res){
+            console.log(res);
+            if(res.ok){
+                res.text()
+                    .then(function(respuesta){
+                        console.log(respuesta)
+                        jugadorId = respuesta
+                    })
+            }
+        })
+}
+
 //Funcion para selecciones aleatorias
 function aleatorio(min, max){
     return Math.floor(Math.random()*(max - min + 1) + min);
@@ -48,6 +63,8 @@ let choqueStatus = false;
 let finDelJuego = false;
 let ganador ;
 
+let jugadorId = null
+
 const seccionSeleccion = document.getElementById("seleccion_prokemon");
 const seccionSeleccionAtaque = document.getElementById("seleccion_ataque");
 const estadoDuelo = document.getElementById("estado-duelo");
@@ -56,6 +73,7 @@ const cardsSummonedSection = document.querySelector(".cards_summoned");
 const botonSeleccionInv = document.getElementById("boton-invocar");
 const divEstadisticas = document.querySelector('div[class="estadisticas_invocaciones"]');
 const divRondas = document.querySelector('div[class="estado-duelo_rondas"]');
+
 const sectionVerMapa = document.getElementById("zona-mapa");
 const mapa = document.getElementById("mapa");
 const contadorMapa = document.querySelector(".contador-choques");
@@ -65,11 +83,14 @@ let lienzo = mapa.getContext("2d");
 let intervalo;
 let interMovEnem;
 let intervaloLecturaChoques;
+let enemigosIndex_p2;
+
 
     //meto mis inputs en un array para luego recorrerlos y buscar cual tiene su atributo checked en true.
     let invocaciones = [sammy, amalthea, ashley];
-    let enemigos
+    let enemigos = []
     //Creo las propiedades que necesito de cada personaje (tal vez metiendo todo en un objeto y luego metiendo el objeto al imput como propiedad ahorraria un poco de espacio, lo escribiria con una funcion creadora de objetos.)
+    invocaciones[0].idJugador = null;
     invocaciones[0].vida = 6;
     invocaciones[0].defensa = 4;
     invocaciones[0].nombre = "🧛‍♀️ Sammy";
@@ -80,7 +101,8 @@ let intervaloLecturaChoques;
     invocaciones[0].velX = 0;
     invocaciones[0].velY = 0;
     invocaciones[0].cardCode = `\n <div class=\"summon_card\" id=\"sammy_card\">\n <section class=\"card_info\">\n <p class=\"summon_name\">Sammy</p>\n <div class=\"card_icons\">\n<div class=\"heart_icon\">\n<p id=\"lifes_number\">${invocaciones[0].vida}</p>\n </div> \n<div class=\"element_icon\" id=\"sammy_element-icon\"></div>\n<div class=\"shield_icon\">\n <p id=\"shield_number\">${invocaciones[0].defensa}</p>\n</div>\n</div>\n </section>\n</div>\n`;
-//Hay que tranajar en las cards y hacerlas lo mas simplificada posible.
+//Hay que trabajar en las cards y hacerlas lo mas simplificada posible.
+    invocaciones[1].idJugador = null;
     invocaciones[1].vida = 7;
     invocaciones[1].defensa = 2;
     invocaciones[1].nombre = "♑️ Amalthea";
@@ -94,6 +116,7 @@ let intervaloLecturaChoques;
     invocaciones[1].alto = 80;
     invocaciones[1].cardCode = `\n <div class="summon_card" id="amalthea_card">\n <section class="card_info">\n<p class="summon_name">Amalthea</p>\n <div class="card_icons">\n<div class="heart_icon">\n <p id="lifes_number">${invocaciones[1].vida}</p>\n </div>\n <div class="element_icon" id="amalthea_element-icon"></div>\n<div class="shield_icon">\n<p id="shield_number">${invocaciones[1].defensa}</p>\n</div> \n </div>\n </section>\n </div>\n`;
 
+    invocaciones[2].idJugador = null;
     invocaciones[2].vida = 4;
     invocaciones[2].defensa = 7;
     invocaciones[2].nombre = "🧚🏽‍♀️ Ashley";
@@ -177,13 +200,15 @@ function leerSeleccion_p1(){
     //hago la funcion para buscar cual de las opciones esta checked
     const checked = (elemento) => elemento.checked;
     indiceInvocacion_p1 = invocaciones.findIndex(checked); 
+    invocaciones[indiceInvocacion_p1].id = jugadorId
     atacante_p1 = invocaciones[indiceInvocacion_p1].nombre;
     vida_p1 = invocaciones[indiceInvocacion_p1].vida;
     defensa_p1 = invocaciones[indiceInvocacion_p1].defensa;
 }
 
-//Esta funcion es la que llama el boton de seleccion en htlm. Imprime la card de la seleccion en el HTML y activa la funcion seleccionInvocacion_p2.
-function seleccionInvocacion(){
+/* Esta funcion es la que llama el boton de Enemigo Aleatorio en htlm. Activa el resto de funciones que corresponden al modo de juego.
+ */
+function juegoAleatorio(){
     seccionSeleccion.style.display = "none";
     seccionSeleccionAtaque.style.display = "flex";  
 
@@ -195,30 +220,25 @@ function seleccionInvocacion(){
     cardsSummonedSection.innerHTML +=`<p class="vs" >VS</p>`
     cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p2].cardCode;
     /*Asi se deshabilita un input: ashley.disabled = true; */
+//Enviar datos al backend
+    seleccionInvocada(atacante_p1)
 }
-function seleccionPorMapa(){
-    seccionSeleccion.style.display = "none";
 
-    leerSeleccion_p1();
-    moviendoEnCanva();
-    IndiceEnemigos();
-    printContador();
-};
-function printContador(){
-    contadorMapa.innerHTML = `
-    <div class="contador-enemigo enemigo_0">
-        <p class="nombre-enemigo">${enemigos[0].nombre}</p>
-        <p class="contador_numero" id="contador_enemigo_0">0</p>
-    </div>
-    <div class="contador-enemigo enemigo_1">
-        <p class="nombre-enemigo ">${enemigos[1].nombre}</p>
-        <p class="contador_numero" id="contador_enemigo_1">0</p>
-    </div>
-    `;
-    pContador_0 = document.getElementById('contador_enemigo_0');
-    pContador_1 = document.getElementById('contador_enemigo_1');
-    console.log(pContador_0);
-}
+//Esta funcion hace parte del modo multijador donde se crean ids por cada participante en el juego
+ function seleccionInvocada(invocacionSeleccionada){
+    fetch(`http://localhost:8080/prokemon/${jugadorId}`,{
+        method: "post",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            prokemon: invocacionSeleccionada
+        })
+    })
+ }
+
+
+
 //mi funcion para seleccion e impresion en HTML de invocacion aleatoria para el atacante_p2
 function seleccionInvocacion_p2(){
     indiceInvocacion_p2 = aleatorio(0,invocaciones.length -1);
@@ -402,34 +422,101 @@ function mensajeFinDelJuego(){
 
 /* Funciones para la seccion del canva(mapa de juego)*/
 
+/* Comenzamos con las funciones del modo mapa en Aleatorio */
+//Esta funcion lee la seleccion de nuestro usuario y activa el mapa
+
+function seleccionPorMapa(){
+    seccionSeleccion.style.display = "none";
+
+    leerSeleccion_p1();
+    imprimirCanva();
+    IndiceEnemigos();
+    printContador();
+    seleccionInvocada(atacante_p1)//Funcion xa multiplayer
+};
+function printContador(){
+    contadorMapa.innerHTML = `
+    <div class="contador-enemigo enemigo_0">
+        <p class="nombre-enemigo">${enemigos[0].nombre}</p>
+        <p class="contador_numero" id="contador_enemigo_0">0</p>
+    </div>
+    <div class="contador-enemigo enemigo_1">
+        <p class="nombre-enemigo ">${enemigos[1].nombre}</p>
+        <p class="contador_numero" id="contador_enemigo_1">0</p>
+    </div>
+    `;
+    pContador_0 = document.getElementById('contador_enemigo_0');
+    pContador_1 = document.getElementById('contador_enemigo_1');
+    console.log(pContador_0);
+}
+
 //Esta funcion es llamada al clickear el boton de seleccion de enimgo en mapa junto con otras que dan inicio a esta seccion del juego, desde esta funcion se llaman las otras funciones de canva.
-function moviendoEnCanva(){
+function imprimirCanva(){
     mapa.width = 550
     mapa.height = 400
     sectionVerMapa.style.display = 'flex';
     intervalo = setInterval(pintarPersonaje,50);
-    interMovEnem = setInterval(movEnemigos,50)
+    //interMovEnem = setInterval(movEnemigos,50)
     intervaloLecturaChoques = setInterval(lecturaChoques,450)
     window.addEventListener('keydown', keyPressed)
     window.addEventListener('keyup', detenerMov)
 }
-function lecturaChoques (){
-    if(!choqueStatus){
-        controlChoques(0);
-        controlChoques(1);
-    }
-}
+
 ///Esta funcion se llama en la funcion moviendoEnMapa por el intervalo seteado cada 50 miliSegundo y lo que hace es mover nuestro personaje segun la tecla oprimida 5 px por cada 50ms
 function pintarPersonaje(){
     invocaciones[indiceInvocacion_p1].x += invocaciones[indiceInvocacion_p1].velX
     invocaciones[indiceInvocacion_p1].y += invocaciones[indiceInvocacion_p1].velY
+    controlDesbordePersonajes(invocaciones,indiceInvocacion_p1)  
+
+
     lienzo.clearRect(0,0,mapa.width,mapa.height);
+
     lienzo.drawImage(invocaciones[indiceInvocacion_p1].imgMin,invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y,invocaciones[1].ancho,invocaciones[1].alto);
+
     lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
     lienzo.drawImage(enemigos[1].imgMin,enemigos[1].x,enemigos[1].y,invocaciones[1].ancho,invocaciones[1].alto);
+   /*  lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
+    lienzo.drawImage(enemigos[1].imgMin,enemigos[1].x,enemigos[1].y,invocaciones[1].ancho,invocaciones[1].alto); */
     
-
+    enviarPosicion(invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y)
     // lienzo.fillRect(5,15,20,40);
+}
+
+function enviarPosicion(x,y){
+    fetch(`http://localhost:8080/prokemon/${jugadorId}/posicion`,{
+        method: "post",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+    .then(function(res){
+        if(res.ok){
+            res.json()
+                .then(function({enemies}){
+                    enemies.forEach(function(enemy){
+                        const invocacionNombre = enemy.invocacion.nombre || "asi no era"
+
+                        const exist = (element) => element.nombre === invocacionNombre;
+                        if(!enemigos.some(exist)){
+
+                            enemigos.unshift(invocaciones[invocaciones.findIndex((inv) => inv.nombre === invocacionNombre)])
+                        }
+                        const myIndex = enemigos.findIndex((enemigo) => enemigo.nombre === invocacionNombre)
+                        
+                        console.log(enemigos);
+                            
+                        enemigos[myIndex].x = enemy.x
+                        enemigos[myIndex].y = enemy.y
+                        
+                        
+                    })
+                })
+        }
+    })
 }
 //Esta funcion se activa con el eventListener de KeyUp haciendo que se seteen los valores de movimiento en 0, si esto no estuvera el perosnaje se seguiria moviendo infinitamente.
 function detenerMov(){
@@ -482,12 +569,12 @@ function movEnemigos (){
     enemigos[1].x += enemigos[1].velX
     enemigos[1].y += enemigos[1].velY
 
-    controlMovEnem(enemigos,0)
-    controlMovEnem(enemigos,1)  
-    controlMovEnem(invocaciones,indiceInvocacion_p1)  
+    controlDesbordePersonajes(enemigos,0)
+    controlDesbordePersonajes(enemigos,1)  
+    controlDesbordePersonajes(invocaciones,indiceInvocacion_p1)  
 }
 //Esta funcion controla que los personajes no se salgan del mapa y que cuando toquen el borde se vayan en la direccion contraria, el movimiento que siguen es siempre en diagonal porque el choque contra el borde solo setea un eje el otro sigue con la direccion inicial, asi que al los dos ejes tener un valor diferente de 0 sus movimientos son en diagonal.
-function controlMovEnem (array,index){
+function controlDesbordePersonajes (array,index){
     if(array[index].x < 0 ){
         array[index].velX = aleatorio(7,25)
         array[index].velY += aleatorio(-5,5)
@@ -503,6 +590,12 @@ function controlMovEnem (array,index){
     if (array[index].y > 315) {
         array[index].velY = aleatorio(-7,-25)
         array[index].velX += aleatorio(-5,5)
+    }
+}
+function lecturaChoques (){
+    if(!choqueStatus){
+        controlChoques(0);
+        controlChoques(1);
     }
 }
 //controlChoques lee con condicionales si se cumple ciertos casos evaluando sus coordenadas
@@ -527,7 +620,6 @@ function controlChoques(index){
         return
     }
 }
-let enemigosIndex_p2;
 function resultadoChoquesEnemigo(){
     enemigosIndex_p2 = enemigos.findIndex(enem => enem.contadorChoques == 3);
     vida_p2 = enemigos[enemigosIndex_p2].vida;
