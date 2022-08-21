@@ -198,12 +198,18 @@ let enemigosIndex_p2;
     var dañoAtaque_p2 = 0;
     var resistenciaAtaque_p2 = 0;
 
+    let seleccionOK = false
 //Mi funcion que lee la seleccion
 function leerSeleccion_p1(){
     //hago la funcion para buscar cual de las opciones esta checked
     const checked = (elemento) => elemento.checked;
     indiceInvocacion_p1 = invocaciones.findIndex(checked); 
-    invocaciones[indiceInvocacion_p1].id = jugadorId
+    if(invocaciones[indiceInvocacion_p1].selected){
+        alert("Esta invocacion ya ha sido seleccionada por otro jugador, escoge otra")
+        return
+    }
+    seleccionOK = true
+    invocaciones[indiceInvocacion_p1].idJugador = jugadorId
     atacante_p1 = invocaciones[indiceInvocacion_p1].nombre;
     vida_p1 = invocaciones[indiceInvocacion_p1].vida;
     defensa_p1 = invocaciones[indiceInvocacion_p1].defensa;
@@ -239,24 +245,31 @@ function juegoAleatorio(){
         })
     })
  }
-//REcibir informacion de personajes seleccionados
+//REcibir informacion de personajes seleccionados con un fetch get que cada 500 ms esta revisando si algun jugador ha enviado informacion de su seleccion, cuando el jugador hace su seleccion dejara de revisar porque ya no le interesa saber que personaje seleccionaron, ya los vera en pantalla.
 let intLecturaSelecciones 
-/* setTimeout(() => {
-    
-}, timeout); */
-[{"id":"0.0917637042042283"},{"id":"0.6564939267393175","invocacion":{"nombre":"♑️ Amalthea"},"x":95,"y":282},{"id":"0.9070220399897277","invocacion":{"nombre":"🧚🏽‍♀️ Ashley"},"x":116,"y":25}]
-// intLecturaSelecciones = setInterval(invSeleccionadas,500)
+
+intLecturaSelecciones = setInterval(invSeleccionadas,500)
 
 function invSeleccionadas () {
     fetch(`http://localhost:8080/selecciones`)
         .then(function(res){
             if(res.ok){
-                res.text()
-                    .then(function(nombres){
+                res.json()
+                    .then(function({ nombres }){
                         console.log(nombres)
+                        nombres.map(function(name){
+                            if(name){
+                                const nombreSelected = name.nombre
+                                const coincide = (ele) => ele.nombre === nombreSelected
+                                const indexSelected = invocaciones.findIndex(coincide)
+                                invocaciones[indexSelected].selected = true
+                                console.log(invocaciones[indexSelected].selected);
+                            }
+                        })
+                        /* console.log(nombres[0].nombre)
+                        console.log(nombres[1].nombre)
+                        console.log(nombres[2].nombre) */
                     
-                        console.log(typeof(nombres))
-                        
                     })
             }
         })
@@ -450,13 +463,18 @@ function mensajeFinDelJuego(){
 //Esta funcion lee la seleccion de nuestro usuario y activa el mapa
 
 function seleccionPorMapa(){
-    seccionSeleccion.style.display = "none";
-
+    
     leerSeleccion_p1();
-    imprimirCanva();
-    IndiceEnemigos();
-    printContador();
-    seleccionInvocada(atacante_p1)//Funcion xa multiplayer
+    if(seleccionOK){
+
+        seccionSeleccion.style.display = "none";
+        
+        imprimirCanva();
+        IndiceEnemigos();
+        printContador();
+        seleccionInvocada(atacante_p1)//Funcion xa multiplayer
+        clearInterval(intLecturaSelecciones)//funcion multiplayer
+    }
 };
 function printContador(){
     contadorMapa.innerHTML = `

@@ -45,7 +45,9 @@ app.get("/selecciones",(req, res) =>{
     })
     console.log(nombres)
     res.setHeader("Access-Control-Allow-Origin", "*")
-    res.send({nombres})
+    res.send({
+        nombres
+    })
 })
 
 app.post("/prokemon/:jugadorId", (req,res)=>{
