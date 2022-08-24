@@ -18,7 +18,7 @@ function iniciarJuego(){
     unirseAlJuego()
 }
 function unirseAlJuego(){
-    fetch("http://localhost:8080/unirse")
+    fetch("http://192.168.0.17:8080/unirse")
         .then(function(res){
             // console.log(res);
             if(res.ok){
@@ -239,7 +239,7 @@ function juegoAleatorio(){
 
 //Esta funcion hace parte del modo multijador donde se crean ids por cada participante en el juego
  function seleccionInvocada(invocacionSeleccionada){
-    fetch(`http://localhost:8080/prokemon/${jugadorId}`,{
+    fetch(`http://192.168.0.17:8080/prokemon/${jugadorId}`,{
         method: "post",
         headers: {
             "Content-Type":"application/json"
@@ -255,7 +255,7 @@ let intLecturaSelecciones
 // intLecturaSelecciones = setInterval(invSeleccionadas,500)
 
 function invSeleccionadas () {
-    fetch(`http://localhost:8080/selecciones`)
+    fetch(`http://192.168.0.17:8080/selecciones`)
         .then(function(res){
             if(res.ok){
                 res.json()
@@ -338,7 +338,7 @@ function ejecutarDuelo(){
 }
 
 function enviarAtaques(indxEl,indxAtk){
-    fetch(`http://localhost:8080/prokemon/${jugadorId}/ataques`,{
+    fetch(`http://192.168.0.17:8080/prokemon/${jugadorId}/ataques`,{
         method: "post",
         headers:{
             "Content-Type":"application/json"
@@ -350,7 +350,7 @@ function enviarAtaques(indxEl,indxAtk){
     })
 }
 function pedirAtaques (){
-    fetch(`http://localhost:8080/prokemon/${oponenteId}/ataquesEnemigo`)
+    fetch(`http://192.168.0.17:8080/prokemon/${oponenteId}/ataquesEnemigo`)
         .then(function(res){
             if(res.ok){
                 res.json()
@@ -581,7 +581,7 @@ function pintarPersonaje(){
 }
 
 function enviarPosicion(x,y){
-    fetch(`http://localhost:8080/prokemon/${jugadorId}/posicion`,{
+    fetch(`http://192.168.0.17:8080/prokemon/${jugadorId}/posicion`,{
         method: "post",
         headers:{
             "Content-Type":"application/json"
