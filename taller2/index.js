@@ -11,6 +11,7 @@ const jugadores = []
 class Jugador{
     constructor(id){
         this.id = id
+        this.duelo = []
     }
     asignarInvocacion(invocacion){
         this.invocacion = invocacion
@@ -19,6 +20,10 @@ class Jugador{
     actualizarPosicion(x,y){
         this.x = x
         this.y = y
+    }
+
+    ataquesRonda(obj){
+        this.duelo.push(obj)
     }
 }
 
@@ -80,6 +85,29 @@ app.post("/prokemon/:jugadorId/posicion",(req,res)=>{
     res.send({
         enemies
     })
+})
+app.post("/prokemon/:jugadorId/ataques",(req,res)=>{
+    const jugadorId = req.params.jugadorId ||""
+    let ronda = { }
+    ronda.indexEl = req.body.indxEl || 0
+    ronda.indexAtk = req.body.indxAtk || 0
+
+
+    const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
+    if(jugadorIndex >= 0 ){
+        jugadores[jugadorIndex].ataquesRonda(ronda)
+    }
+    console.log(jugadores[jugadorIndex]);
+    res.end()
+})
+app.get("/prokemon/:oponenteId/ataquesEnemigo",(req, res) => {
+    const enemigoId = req.params.oponenteId ||""
+    const enemigoIndex = jugadores.findIndex((jugador) => enemigoId === jugador.id)
+
+    const ataquesEnemigos = jugadores[enemigoIndex].duelo
+
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.send({ataquesEnemigos})
 })
 
 

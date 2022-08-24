@@ -62,8 +62,10 @@ let escudo = "🛡"
 let choqueStatus = false;
 let finDelJuego = false;
 let ganador ;
+let atkOponenteRecibido = true
 
 let jugadorId = null
+let oponenteId = null
 
 const seccionSeleccion = document.getElementById("seleccion_prokemon");
 const seccionSeleccionAtaque = document.getElementById("seleccion_ataque");
@@ -83,6 +85,8 @@ let lienzo = mapa.getContext("2d");
 let intervalo;
 let interMovEnem;
 let intervaloLecturaChoques;
+let intAtaquesOponente
+
 let enemigosIndex_p2;
 
 
@@ -230,7 +234,7 @@ function juegoAleatorio(){
     cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p2].cardCode;
     /*Asi se deshabilita un input: ashley.disabled = true; */
 //Enviar datos al backend
-    seleccionInvocada(atacante_p1)
+    // seleccionInvocada(atacante_p1)
 }
 
 //Esta funcion hace parte del modo multijador donde se crean ids por cada participante en el juego
@@ -248,7 +252,7 @@ function juegoAleatorio(){
 //REcibir informacion de personajes seleccionados con un fetch get que cada 500 ms esta revisando si algun jugador ha enviado informacion de su seleccion, cuando el jugador hace su seleccion dejara de revisar porque ya no le interesa saber que personaje seleccionaron, ya los vera en pantalla.
 let intLecturaSelecciones 
 
-intLecturaSelecciones = setInterval(invSeleccionadas,500)
+// intLecturaSelecciones = setInterval(invSeleccionadas,500)
 
 function invSeleccionadas () {
     fetch(`http://localhost:8080/selecciones`)
@@ -263,13 +267,8 @@ function invSeleccionadas () {
                                 const coincide = (ele) => ele.nombre === nombreSelected
                                 const indexSelected = invocaciones.findIndex(coincide)
                                 invocaciones[indexSelected].selected = true
-                                console.log(invocaciones[indexSelected].selected);
                             }
                         })
-                        /* console.log(nombres[0].nombre)
-                        console.log(nombres[1].nombre)
-                        console.log(nombres[2].nombre) */
-                    
                     })
             }
         })
@@ -317,27 +316,61 @@ function escalaVida(){
 
 //Mi funcion para imprimir ataques en HTML que es activada al dar click a los botones de ataque.Tambien selecciona el ataque aleatorio del P2
 function imprimirAtaques(){
-    ataquesAleatorios();
-
-    nuevaRonda(ataquesObj[indiceElemento_p1][indiceAtaque_p1].nombreAtaque, ataquesObj[indiceElemento_p2][indiceAtaque_p2].nombreAtaque );
-    dueloRonda(invocaciones[indiceInvocacion_p2].defensa, invocaciones[indiceInvocacion_p1].defensa);
-    imprimirEstadisticasIniciales();
-    interaccionesDuelo();
-}
-
-//funcion de ataque aleatorio P2; selecciona el indice aleatorio del elemento y del ataque.
-
-function ataquesAleatorios(){
-    indiceElemento_p2 = aleatorio(0,ataquesObj.length -1);
-    indiceAtaque_p2 = aleatorio(0,ataquesObj[indiceElemento_p2].length -1);
+    if (!atkOponenteRecibido) {
+        alert("estamos esperando el ataque del enemigo")
+        return
+    }
     indiceAtaque_p1 = aleatorio(0,ataquesObj[indiceElemento_p1].length -1);
-
     dañoAtaque_p1 = ataquesObj[indiceElemento_p1][indiceAtaque_p1].daño
-    dañoAtaque_p2 = ataquesObj[indiceElemento_p2][indiceAtaque_p2].daño
     resistenciaAtaque_p1 =ataquesObj[indiceElemento_p1][indiceAtaque_p1].defensa
-    resistenciaAtaque_p2 =ataquesObj[indiceElemento_p2][indiceAtaque_p2].defensa
+    enviarAtaques(indiceElemento_p1,indiceAtaque_p1)
+    atkOponenteRecibido = false
+    intAtaquesOponente = setInterval(pedirAtaques, 1000)
+
+}
+function ejecutarDuelo(){
+    if (atkOponenteRecibido) {
+        nuevaRonda(ataquesObj[indiceElemento_p1][indiceAtaque_p1].nombreAtaque, ataquesObj[indiceElemento_p2][indiceAtaque_p2].nombreAtaque );
+        dueloRonda(invocaciones[indiceInvocacion_p2].defensa, invocaciones[indiceInvocacion_p1].defensa);
+        imprimirEstadisticasIniciales();
+        interaccionesDuelo();
+    }
 }
 
+function enviarAtaques(indxEl,indxAtk){
+    fetch(`http://localhost:8080/prokemon/${jugadorId}/ataques`,{
+        method: "post",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            indxEl,
+            indxAtk
+        })
+    })
+}
+function pedirAtaques (){
+    fetch(`http://localhost:8080/prokemon/${oponenteId}/ataquesEnemigo`)
+        .then(function(res){
+            if(res.ok){
+                res.json()
+                    .then(function({ataquesEnemigos}){
+                        if(ataquesEnemigos.length === rondas){
+
+                            indiceElemento_p2 = ataquesEnemigos[ataquesEnemigos.length -1].indexEl
+                            indiceAtaque_p2 = ataquesEnemigos[ataquesEnemigos.length -1].indexAtk
+                            dañoAtaque_p2 = ataquesObj[indiceElemento_p2][indiceAtaque_p2].daño
+                            resistenciaAtaque_p2 =ataquesObj[indiceElemento_p2][indiceAtaque_p2].defensa
+
+                            clearInterval(intAtaquesOponente)
+                            atkOponenteRecibido = true
+                            ejecutarDuelo()
+                            
+                        }
+                    })
+            }
+        })
+}
 //Funciones de botones de ataque
 
 function ataqueAgua (){
@@ -469,11 +502,11 @@ function seleccionPorMapa(){
 
         seccionSeleccion.style.display = "none";
         
-        imprimirCanva();
-        IndiceEnemigos();
-        printContador();
         seleccionInvocada(atacante_p1)//Funcion xa multiplayer
         clearInterval(intLecturaSelecciones)//funcion multiplayer
+        imprimirCanva();
+        // IndiceEnemigos();
+        // printContador();
     }
 };
 function printContador(){
@@ -486,10 +519,14 @@ function printContador(){
         <p class="nombre-enemigo ">${enemigos[1].nombre}</p>
         <p class="contador_numero" id="contador_enemigo_1">0</p>
     </div>
+    <div class="contador-enemigo enemigos">
+        <p class="nombre-enemigo ">${enemigos[0].nombre} vs ${enemigos[1].nombre}</p>
+        <p class="contador_numero" id="contador_enemigos">0</p>
+    </div>
     `;
     pContador_0 = document.getElementById('contador_enemigo_0');
     pContador_1 = document.getElementById('contador_enemigo_1');
-    console.log(pContador_0);
+    pContadorEnemies = document.getElementById('contador_enemigos');
 }
 
 //Esta funcion es llamada al clickear el boton de seleccion de enimgo en mapa junto con otras que dan inicio a esta seccion del juego, desde esta funcion se llaman las otras funciones de canva.
@@ -499,11 +536,11 @@ function imprimirCanva(){
     sectionVerMapa.style.display = 'flex';
     intervalo = setInterval(pintarPersonaje,50);
     //interMovEnem = setInterval(movEnemigos,50)
-    intervaloLecturaChoques = setInterval(lecturaChoques,450)
+    // intervaloLecturaChoques = setInterval(lecturaChoques,450)
     window.addEventListener('keydown', keyPressed)
     window.addEventListener('keyup', detenerMov)
 }
-
+let todosEnMapa = false
 ///Esta funcion se llama en la funcion moviendoEnMapa por el intervalo seteado cada 50 miliSegundo y lo que hace es mover nuestro personaje segun la tecla oprimida 5 px por cada 50ms
 function pintarPersonaje(){
     invocaciones[indiceInvocacion_p1].x += invocaciones[indiceInvocacion_p1].velX
@@ -513,14 +550,33 @@ function pintarPersonaje(){
 
     lienzo.clearRect(0,0,mapa.width,mapa.height);
 
-    lienzo.drawImage(invocaciones[indiceInvocacion_p1].imgMin,invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y,invocaciones[1].ancho,invocaciones[1].alto);
+    enviarPosicion(invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y)
 
-    lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
-    lienzo.drawImage(enemigos[1].imgMin,enemigos[1].x,enemigos[1].y,invocaciones[1].ancho,invocaciones[1].alto);
+    lienzo.drawImage(invocaciones[indiceInvocacion_p1].imgMin,invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y,invocaciones[1].ancho,invocaciones[1].alto);
+    if(enemigos.length > 0){
+        if(enemigos.length == 1){
+
+            lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
+        }
+        if(enemigos.length == 2){
+            lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
+
+            lienzo.drawImage(enemigos[1].imgMin,enemigos[1].x,enemigos[1].y,invocaciones[1].ancho,invocaciones[1].alto);
+            
+            if(!todosEnMapa){
+                // alert("Todos estan en el mapa: el juego empieza ya!")
+                printContador();
+                intervaloLecturaChoques = setInterval(lecturaChoques,450)
+                todosEnMapa = true
+                enemigos[0].contadorChoques = 0
+                enemigos[1].contadorChoques = 0
+            }
+        }
+    }
    /*  lienzo.drawImage(enemigos[0].imgMin,enemigos[0].x,enemigos[0].y,invocaciones[1].ancho,invocaciones[1].alto);
     lienzo.drawImage(enemigos[1].imgMin,enemigos[1].x,enemigos[1].y,invocaciones[1].ancho,invocaciones[1].alto); */
     
-    enviarPosicion(invocaciones[indiceInvocacion_p1].x,invocaciones[indiceInvocacion_p1].y)
+    
     // lienzo.fillRect(5,15,20,40);
 }
 
@@ -539,23 +595,28 @@ function enviarPosicion(x,y){
         if(res.ok){
             res.json()
                 .then(function({enemies}){
-                    console.log(enemies)
                     enemies.forEach(function(enemy){
-                        const invocacionNombre = enemy.invocacion.nombre || "asi no era"
+                        if(enemy.invocacion){
 
-                        const exist = (element) => element.nombre === invocacionNombre;
-                        if(!enemigos.some(exist)){
-
-                            enemigos.unshift(invocaciones[invocaciones.findIndex((inv) => inv.nombre === invocacionNombre)])
-                        }
-                        const myIndex = enemigos.findIndex((enemigo) => enemigo.nombre === invocacionNombre)
-                        
-                        console.log(enemigos);
+                            const invocacionNombre = enemy.invocacion.nombre || "asi no era"
                             
-                        enemigos[myIndex].x = enemy.x
-                        enemigos[myIndex].y = enemy.y
-                        
-                        
+                            const exist = (element) => element.nombre === invocacionNombre;
+                            
+                            if(enemigos.length === 0){
+                                enemigos.push(invocaciones[invocaciones.findIndex((inv) => inv.nombre === invocacionNombre)])
+                            }
+                            if(enemigos.some(exist)){
+                                console.log(enemigos);
+                            }else{
+                                
+                                enemigos.push(invocaciones[invocaciones.findIndex((inv) => inv.nombre === invocacionNombre)])
+                            }
+                            const myIndex = enemigos.findIndex((enemigo) => enemigo.nombre === invocacionNombre)
+                            
+                            enemigos[myIndex].x = enemy.x
+                            enemigos[myIndex].y = enemy.y
+                            enemigos[myIndex].idJugador = enemy.id 
+                        }
                     })
                 })
         }
@@ -635,10 +696,29 @@ function controlDesbordePersonajes (array,index){
         array[index].velX += aleatorio(-5,5)
     }
 }
+function efectoRebotePersonajes (index){
+    if(invocaciones[indiceInvocacion_p1].x < enemigos[index].x + (invocaciones[1].ancho - 3) && invocaciones[indiceInvocacion_p1].y <=  enemigos[index].y + (invocaciones[1].alto - 3) && (invocaciones[indiceInvocacion_p1].y + (invocaciones[1].alto - 3))>= enemigos[index].y ){
+        invocaciones[indiceInvocacion_p1].velX = aleatorio(7,25)
+        invocaciones[indiceInvocacion_p1].velY += aleatorio(-5,5)
+    }
+    if (invocaciones[indiceInvocacion_p1].x + (invocaciones[indiceInvocacion_p1].ancho - 3) > enemigos[index].x && invocaciones[indiceInvocacion_p1].y <=  enemigos[index].y + (invocaciones[1].alto - 3) && (invocaciones[indiceInvocacion_p1].y + (invocaciones[1].alto - 3))>= enemigos[index].y) {
+        invocaciones[indiceInvocacion_p1].velX = aleatorio(-7,-25)
+        invocaciones[indiceInvocacion_p1].velY += aleatorio(-5,5)
+    }
+    if (invocaciones[indiceInvocacion_p1].y < enemigos[index].y + (invocaciones[1].alto - 3) && invocaciones[indiceInvocacion_p1].x <=  enemigos[index].x + (invocaciones[1].ancho - 3) && (invocaciones[indiceInvocacion_p1].x + (invocaciones[1].ancho - 3))>= enemigos[index].x)  {
+        invocaciones[indiceInvocacion_p1].velY = aleatorio(7,25)
+        invocaciones[indiceInvocacion_p1].velX += aleatorio(-5,5)
+    }
+    if (invocaciones[indiceInvocacion_p1].y + (invocaciones[indiceInvocacion_p1].alto - 3) > enemigos[index].y && invocaciones[indiceInvocacion_p1].x <=  enemigos[index].x + (invocaciones[1].ancho - 3) && (invocaciones[indiceInvocacion_p1].x + (invocaciones[1].ancho - 3))>= enemigos[index].x) {
+        invocaciones[indiceInvocacion_p1].velY = aleatorio(-7,-25)
+        invocaciones[indiceInvocacion_p1].velX += aleatorio(-5,5)
+    }
+}
 function lecturaChoques (){
     if(!choqueStatus){
         controlChoques(0);
         controlChoques(1);
+        controlChoquesEnemigos();
     }
 }
 //controlChoques lee con condicionales si se cumple ciertos casos evaluando sus coordenadas
@@ -654,21 +734,43 @@ function controlChoques(index){
         enemigos[index].contadorChoques++
         pContador_0.innerText = `${enemigos[0].contadorChoques}`
         pContador_1.innerText = `${enemigos[1].contadorChoques}`
+        efectoRebotePersonajes(index)
         
-        if(enemigos[0].contadorChoques == 3 || enemigos[1].contadorChoques == 3){
+        if(enemigos[index].contadorChoques >= 3){
+            choqueStatus = true;
             detenerMovEnem(0)
             detenerMovEnem(1)
             resultadoChoquesEnemigo()
         }
+    }
+}
+let contadorChoquesEnemigos = 0
+function controlChoquesEnemigos(){
+    if (
+        enemigos[0].y > enemigos[1].y + invocaciones[1].alto ||
+        enemigos[0].y + invocaciones[1].alto < enemigos[1].y ||
+        enemigos[0].x > enemigos[1].x + invocaciones[1].ancho ||
+        enemigos[0].x + invocaciones[1].ancho < enemigos[1].x
+        ) {
         return
+    }else{
+        contadorChoquesEnemigos++
+        pContadorEnemies.innerText = `${contadorChoquesEnemigos}`
+        
+        if(contadorChoquesEnemigos >= 3){
+            choqueStatus = true;
+            detenerMovEnem(0)
+            alert("Tus enemigos entraron en duelo, quedaste fuera de la batalla, sorry XD")
+        }
     }
 }
 function resultadoChoquesEnemigo(){
-    enemigosIndex_p2 = enemigos.findIndex(enem => enem.contadorChoques == 3);
+    enemigosIndex_p2 = enemigos.findIndex(enem => enem.contadorChoques >= 3);
     vida_p2 = enemigos[enemigosIndex_p2].vida;
     defensa_p2 = enemigos[enemigosIndex_p2].defensa;
     atacante_p2 = enemigos[enemigosIndex_p2].nombre;
     indiceInvocacion_p2 = invocaciones.findIndex(pj => pj.nombre == atacante_p2)
+    oponenteId = enemigos[enemigosIndex_p2].idJugador 
     imprimirEstadisticasIniciales();
     sectionVerMapa.style.display = "none";
     cardsSummonedSection.innerHTML += invocaciones[indiceInvocacion_p1].cardCode;
@@ -683,5 +785,4 @@ function detenerMovEnem(index){
     clearInterval(interMovEnem)
     clearInterval(intervalo)
     clearInterval(intervaloLecturaChoques)
-    choqueStatus = true;
 }
